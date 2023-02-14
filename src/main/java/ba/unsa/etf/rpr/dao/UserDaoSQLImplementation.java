@@ -1,10 +1,12 @@
 package ba.unsa.etf.rpr.dao;
 
+import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.domain.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -66,5 +68,11 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // TODO - first create dao factory
+    @Override
+    public List<Recipe> getRecipes() {
+        return null;
     }
 }
