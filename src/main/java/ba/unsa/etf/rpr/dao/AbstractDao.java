@@ -2,6 +2,7 @@ package ba.unsa.etf.rpr.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,5 +67,19 @@ public abstract class AbstractDao<T> implements Dao<T> {
         }
     }
 
-
+    @Override
+    public List<T> getAll() {
+        String sql = "SELECT * FROM " + this.tableName;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<T> resultList = new ArrayList<>();
+            while (rs.next()) {
+                resultList.add(row2object(rs));
+            }
+            return resultList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
