@@ -1,9 +1,14 @@
 package ba.unsa.etf.rpr.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Map;
 
+/**
+ * Abstract class that implements core DAO CRUD methods for every entity
+ *
+ * @author Ahmed Agic
+ */
 public abstract class AbstractDao<T> implements Dao<T> {
     private static Connection connection = null;
     private String tableName;
@@ -40,4 +45,26 @@ public abstract class AbstractDao<T> implements Dao<T> {
         }
         return connection;
     }
+
+    public abstract T row2object(ResultSet rs);
+
+
+    @Override
+    public T getById(int id) {
+        String sql = "SELECT * FROM " + this.tableName + " WHERE id=?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<T> resultList = new ArrayList<>();
+            while (rs.next()) {
+                resultList.add(row2object(rs));
+            }
+            return resultList.get(0);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
