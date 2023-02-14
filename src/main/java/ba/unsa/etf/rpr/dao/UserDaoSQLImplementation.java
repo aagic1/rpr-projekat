@@ -2,6 +2,7 @@ package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.User;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -53,6 +54,17 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
 
     @Override
     public User searchByUsername(String username) {
-        return null;
+        String sql = "SELECT * FROM user WHERE username=?";
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return row2object(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
