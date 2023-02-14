@@ -145,6 +145,20 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
         }
     }
 
+    @Override
+    public void delete(T item) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DELETE FROM ").append(this.tableName)
+                .append("WHERE id=?");
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(builder.toString());
+            pstmt.setObject(1, item.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String prepareUpdateParts(Map<String, Object> row) {
         StringBuilder columns = new StringBuilder();
 
