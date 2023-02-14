@@ -9,7 +9,7 @@ public class Ingredient implements Idable{
     private int id;
     private String name;
     private int amount;
-    private String measurement_unit;
+    private String measurementUnit;
 
     public Ingredient() {
     }
@@ -18,7 +18,7 @@ public class Ingredient implements Idable{
         this.id = id;
         this.name = name;
         this.amount = amount;
-        this.measurement_unit = measurement_unit;
+        this.measurementUnit = measurement_unit;
     }
 
     public String getName() {
@@ -37,12 +37,12 @@ public class Ingredient implements Idable{
         this.amount = amount;
     }
 
-    public String getMeasurement_unit() {
-        return measurement_unit;
+    public String getMeasurementUnit() {
+        return measurementUnit;
     }
 
-    public void setMeasurement_unit(String measurement_unit) {
-        this.measurement_unit = measurement_unit;
+    public void setMeasurementUnit(String measurementUnit) {
+        this.measurementUnit = measurementUnit;
     }
 
     @Override
@@ -60,16 +60,16 @@ public class Ingredient implements Idable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return id == that.id && amount == that.amount && Objects.equals(name, that.name) && Objects.equals(measurement_unit, that.measurement_unit);
+        return id == that.id && amount == that.amount && Objects.equals(name, that.name) && Objects.equals(measurementUnit, that.measurementUnit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, amount, measurement_unit);
+        return Objects.hash(id, name, amount, measurementUnit);
     }
 
     @Override
     public String toString() {
-        return amount + " " + measurement_unit + " " + name;
+        return amount + " " + measurementUnit + " " + name;
     }
 }

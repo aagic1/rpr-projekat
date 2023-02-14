@@ -3,6 +3,7 @@ package ba.unsa.etf.rpr.dao;
 import ba.unsa.etf.rpr.domain.Ingredient;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -31,7 +32,15 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
 
     @Override
     public Ingredient row2object(ResultSet rs) {
-        return null;
+        try {
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(rs.getInt("id"));
+            ingredient.setAmount(rs.getInt("amount"));
+            ingredient.setMeasurementUnit(rs.getString("measurement_unit"));
+            return ingredient;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
