@@ -5,6 +5,7 @@ import ba.unsa.etf.rpr.domain.Instruction;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * MySQL implementation of DAO
@@ -22,6 +23,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
             instruction.setId(rs.getInt("id"));
             instruction.setStep(rs.getInt("step"));
             instruction.setDescription(rs.getString("description"));
+            return instruction;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -29,6 +31,10 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
 
     @Override
     public Map<String, Object> object2row(Instruction object) {
-        return null;
+        Map<String, Object> row = new TreeMap<>();
+        row.put("id", object.getId());
+        row.put("step", object.getStep());
+        row.put("description", object.getDescription());
+        return row;
     }
 }
