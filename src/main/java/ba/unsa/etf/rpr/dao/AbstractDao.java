@@ -119,6 +119,49 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
         }
     }
 
+    @Override
+    public T update(T item) {
+        Map<String, Object> row = object2row(item);
+        String updateColumns = prepareUpdateParts(row);
+        StringBuilder builder = new StringBuilder();
+        builder.append("UPDATE").append(this.tableName)
+                .append(" SET ").append(updateColumns)
+                .append(" WHERE id=?");
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(builder.toString());
+            int counter = 1;
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                if (entry.getKey().equals("id")) {
+                    continue;
+                }
+                pstmt.setObject(counter, entry.getValue());
+                counter++;
+            }
+            pstmt.setObject(counter, item.getId());
+            pstmt.executeUpdate();
+            return item;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String prepareUpdateParts(Map<String, Object> row) {
+        StringBuilder columns = new StringBuilder();
+
+        int counter = 0;
+        for (Map.Entry<String, Object> entry : row.entrySet()) {
+            counter++;
+            if (entry.getKey().equals("id")) {
+                continue;
+            }
+            columns.append(entry.getKey()).append("=?");
+            if (row.size() != counter) {
+                columns.append(",");
+            }
+        }
+        return columns.toString();
+    }
+
     private Map.Entry<String, String> prepareInsertParts(Map<String, Object> row) {
         StringBuilder columns = new StringBuilder();
         StringBuilder questions = new StringBuilder();
