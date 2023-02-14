@@ -1,5 +1,7 @@
 package ba.unsa.etf.rpr.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,6 +12,8 @@ public class User implements Idable{
     private String username;
     private String email;
     private String password;
+
+    private List<Recipe> createdRecipes;
 
     public User() {
     }
@@ -55,17 +59,33 @@ public class User implements Idable{
         return 0;
     }
 
+    public List<Recipe> getCreatedRecipes() {
+        return createdRecipes;
+    }
+
+    public void setCreatedRecipes(List<Recipe> createdRecipes) {
+        this.createdRecipes = createdRecipes;
+    }
+
+    /**
+     * Adds new recipe to list
+     * @param recipe recipe to be added
+     */
+    public void addRecipe(Recipe recipe) {
+        createdRecipes.add(recipe);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdRecipes, user.createdRecipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password);
+        return Objects.hash(id, username, email, password, createdRecipes);
     }
 
     @Override
