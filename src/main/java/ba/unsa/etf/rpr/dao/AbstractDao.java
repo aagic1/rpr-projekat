@@ -1,6 +1,9 @@
 package ba.unsa.etf.rpr.dao;
 
+import ba.unsa.etf.rpr.domain.Idable;
+
 import java.sql.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,7 @@ import java.util.Map;
  *
  * @author Ahmed Agic
  */
-public abstract class AbstractDao<T> implements Dao<T> {
+public abstract class AbstractDao<T extends Idable> implements Dao<T> {
     private static Connection connection = null;
     private String tableName;
 
@@ -49,6 +52,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     public abstract T row2object(ResultSet rs);
 
+    public abstract Map<String, Object> object2row(T object);
 
     @Override
     public T getById(int id) {
@@ -82,4 +86,57 @@ public abstract class AbstractDao<T> implements Dao<T> {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public T add(T item) {
+        Map<String, Object> row = object2row(item);
+        Map.Entry<String, String> columns = prepareInsertParts(row);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO ").append(this.tableName)
+                .append(" (").append(columns.getKey()).append(") ")
+                .append(" VALUES(").append(columns.getValue()).append(");");
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(builder.toString(), Statement.RETURN_GENERATED_KEYS);
+            int counter = 1;
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                if (entry.getKey().equals("id")) {
+                    continue;
+                }
+                pstmt.setObject(counter, entry.getValue());
+                counter++;
+            }
+            pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            rs.next();
+            item.setId(rs.getInt(1));
+
+            return item;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Map.Entry<String, String> prepareInsertParts(Map<String, Object> row) {
+        StringBuilder columns = new StringBuilder();
+        StringBuilder questions = new StringBuilder();
+
+        int counter = 0;
+        for (Map.Entry<String, Object> entry : row.entrySet()) {
+            counter++;
+            if (entry.getKey().equals("id")) {
+                continue;
+            }
+            columns.append(entry.getKey());
+            questions.append("?");
+            if (row.size() != counter) {
+                columns.append(",");
+                questions.append(",");
+            }
+        }
+        return new AbstractMap.SimpleEntry<>(columns.toString(), questions.toString());
+    }
+
 }
