@@ -5,6 +5,7 @@ import ba.unsa.etf.rpr.domain.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class UserDaoSQLImplementation extends AbstractDao<User> implements UserDao{
     private static UserDaoSQLImplementation instance = null;
@@ -42,7 +43,12 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
 
     @Override
     public Map<String, Object> object2row(User object) {
-        return null;
+        Map<String, Object> row = new TreeMap<>();
+        row.put("id", object.getId());
+        row.put("username", object.getUsername());
+        row.put("email", object.getEmail());
+        row.put("password", object.getPassword());
+        return row;
     }
 
     @Override
