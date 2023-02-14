@@ -5,6 +5,7 @@ import ba.unsa.etf.rpr.domain.Ingredient;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * MySQL implementation of DAO
@@ -35,6 +36,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
         try {
             Ingredient ingredient = new Ingredient();
             ingredient.setId(rs.getInt("id"));
+            ingredient.setName(rs.getString("name"));
             ingredient.setAmount(rs.getInt("amount"));
             ingredient.setMeasurementUnit(rs.getString("measurement_unit"));
             return ingredient;
@@ -45,6 +47,11 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
 
     @Override
     public Map<String, Object> object2row(Ingredient object) {
-        return null;
+        Map<String, Object> row = new TreeMap<>();
+        row.put("id", object.getId());
+        row.put("name", object.getName());
+        row.put("amount", object.getAmount());
+        row.put("measurement_unit", object.getMeasurementUnit());
+        return row;
     }
 }
