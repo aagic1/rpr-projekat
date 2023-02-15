@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.domain.User;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -69,6 +70,23 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
         String sql = "SELECT * FROM recipe WHERE title LIKE '%" + text + "%'";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<Recipe> recipes = new ArrayList<>();
+            while (rs.next()) {
+                recipes.add(row2object(rs));
+            }
+            return recipes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Recipe> searchByOwner(User owner) {
+        String sql = "SELECT * FROM recipe WHERE owner_id=?";
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, owner.getId());
             ResultSet rs = pstmt.executeQuery();
             ArrayList<Recipe> recipes = new ArrayList<>();
             while (rs.next()) {
