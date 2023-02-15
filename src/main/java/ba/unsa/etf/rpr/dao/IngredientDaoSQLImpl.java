@@ -1,9 +1,13 @@
 package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Ingredient;
+import ba.unsa.etf.rpr.domain.Recipe;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -56,5 +60,22 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
         row.put("measurement_unit", object.getMeasurementUnit());
 
         return row;
+    }
+
+    @Override
+    public List<Ingredient> getIngredientsByRecipe(Recipe recipe) {
+        String sql = "SELECT * FROM ingredient WHERE recipe_id=?";
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, recipe.getId());
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            while (rs.next()) {
+                ingredients.add(row2object(rs));
+            }
+            return ingredients;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
