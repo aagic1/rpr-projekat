@@ -10,15 +10,17 @@ public class Ingredient implements Idable{
     private String name;
     private int amount;
     private String measurementUnit;
+    private Recipe recipe;
 
     public Ingredient() {
     }
 
-    public Ingredient(int id, String name, int amount, String measurement_unit) {
+    public Ingredient(int id, String name, int amount, String measurementUnit, Recipe recipe) {
         this.id = id;
         this.name = name;
         this.amount = amount;
-        this.measurementUnit = measurement_unit;
+        this.measurementUnit = measurementUnit;
+        this.recipe = recipe;
     }
 
     public String getName() {
@@ -55,17 +57,25 @@ public class Ingredient implements Idable{
         return id;
     }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return id == that.id && amount == that.amount && Objects.equals(name, that.name) && Objects.equals(measurementUnit, that.measurementUnit);
+        return id == that.id && amount == that.amount && Objects.equals(name, that.name) && Objects.equals(measurementUnit, that.measurementUnit) && Objects.equals(recipe, that.recipe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, amount, measurementUnit);
+        return Objects.hash(id, name, amount, measurementUnit, recipe);
     }
 
     @Override
