@@ -43,7 +43,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
             ingredient.setName(rs.getString("name"));
             ingredient.setAmount(rs.getInt("amount"));
             ingredient.setMeasurementUnit(rs.getString("measurement_unit"));
-            ingredient.setRecipe(RecipeDaoSQLImpl.getInstance().getById(rs.getInt("recipe_id")));
+            ingredient.setRecipe(DaoFactory.recipeDao().getById(rs.getInt("recipe_id")));
             return ingredient;
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -41,7 +41,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
         Instruction instruction = new Instruction();
         try {
             instruction.setId(rs.getInt("id"));
-            instruction.setRecipe(RecipeDaoSQLImpl.getInstance().getById(rs.getInt("recipe_id")));
+            instruction.setRecipe(DaoFactory.recipeDao().getById(rs.getInt("recipe_id")));
             instruction.setStep(rs.getInt("step"));
             instruction.setDescription(rs.getString("description"));
             return instruction;

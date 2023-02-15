@@ -37,7 +37,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
         Recipe recipe = new Recipe();
         try {
             recipe.setId(rs.getInt("id"));
-            recipe.setOwner(UserDaoSQLImplementation.getInstance().getById(rs.getInt("owner_id")));
+            recipe.setOwner(DaoFactory.userDao().getById(rs.getInt("owner_id")));
             recipe.setTitle(rs.getString("title"));
             recipe.setDescription(rs.getString("description"));
             recipe.setDate(rs.getDate("date").toLocalDate());
