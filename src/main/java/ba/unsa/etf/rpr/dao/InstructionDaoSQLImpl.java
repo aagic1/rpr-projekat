@@ -36,6 +36,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
         Instruction instruction = new Instruction();
         try {
             instruction.setId(rs.getInt("id"));
+            instruction.setRecipe(RecipeDaoSQLImpl.getInstance().getById(rs.getInt("recipe_id")));
             instruction.setStep(rs.getInt("step"));
             instruction.setDescription(rs.getString("description"));
             return instruction;
@@ -48,6 +49,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
     public Map<String, Object> object2row(Instruction object) {
         Map<String, Object> row = new TreeMap<>();
         row.put("id", object.getId());
+        row.put("recipe_id", object.getRecipe().getId());
         row.put("step", object.getStep());
         row.put("description", object.getDescription());
         return row;
