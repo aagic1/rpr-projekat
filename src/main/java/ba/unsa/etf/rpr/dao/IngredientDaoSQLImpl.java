@@ -39,6 +39,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
             ingredient.setName(rs.getString("name"));
             ingredient.setAmount(rs.getInt("amount"));
             ingredient.setMeasurementUnit(rs.getString("measurement_unit"));
+            ingredient.setRecipe(RecipeDaoSQLImpl.getInstance().getById(rs.getInt("recipe_id")));
             return ingredient;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -49,9 +50,11 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
     public Map<String, Object> object2row(Ingredient object) {
         Map<String, Object> row = new TreeMap<>();
         row.put("id", object.getId());
+        row.put("recipe_id", object.getRecipe().getId());
         row.put("name", object.getName());
         row.put("amount", object.getAmount());
         row.put("measurement_unit", object.getMeasurementUnit());
+
         return row;
     }
 }
