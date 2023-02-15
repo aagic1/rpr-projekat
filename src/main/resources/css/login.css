@@ -3,21 +3,16 @@
     -fx-font-size: 12px;
 }
 
+#lblValidationPassword.valid,
+#lblValidationUsername.valid,
 #lblValidationEmail.valid {
     -fx-min-height: 0;
     -fx-max-height: 0;
 }
 
+#lblValidationPassword.invalid,
+#lblValidationUsername.invalid,
 #lblValidationEmail.invalid {
-    -fx-min-height: auto;
-}
-
-#lblValidationPassword.valid {
-    -fx-min-height: 0;
-    -fx-max-height: 0;
-}
-
-#lblValidationPassword.invalid {
     -fx-min-height: 12px;
 }
 
