@@ -1,10 +1,12 @@
 package ba.unsa.etf.rpr.domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Recipe implements Idable {
     private int id;
     private String title;
+    private LocalDate date;
     private String description;
     private int preparationTime;
     private int cookTime;
@@ -12,10 +14,11 @@ public class Recipe implements Idable {
     private String notes;
     private User owner;
 
-    public Recipe(int id, String title, String description, int preparationTime, int cookTime,
-                  int servings, String notes, User owner) {
+    public Recipe(int id, String title, LocalDate date, String description, int preparationTime,
+                  int cookTime, int servings, String notes, User owner) {
         this.id = id;
         this.title = title;
+        this.date = date;
         this.description = description;
         this.preparationTime = preparationTime;
         this.cookTime = cookTime;
@@ -91,17 +94,25 @@ public class Recipe implements Idable {
         this.owner = owner;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recipe recipe = (Recipe) o;
-        return id == recipe.id && preparationTime == recipe.preparationTime && cookTime == recipe.cookTime && servings == recipe.servings && Objects.equals(title, recipe.title) && Objects.equals(description, recipe.description) && Objects.equals(notes, recipe.notes) && Objects.equals(owner, recipe.owner);
+        return id == recipe.id && preparationTime == recipe.preparationTime && cookTime == recipe.cookTime && servings == recipe.servings && Objects.equals(title, recipe.title) && Objects.equals(date, recipe.date) && Objects.equals(description, recipe.description) && Objects.equals(notes, recipe.notes) && Objects.equals(owner, recipe.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, preparationTime, cookTime, servings, notes, owner);
+        return Objects.hash(id, title, date, description, preparationTime, cookTime, servings, notes, owner);
     }
 
     @Override
