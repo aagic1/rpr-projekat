@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -36,14 +37,14 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
         Recipe recipe = new Recipe();
         try {
             recipe.setId(rs.getInt("id"));
+            recipe.setOwner(UserDaoSQLImplementation.getInstance().getById(rs.getInt("owner_id")));
             recipe.setTitle(rs.getString("title"));
-            recipe.setDate(rs.getDate("date").toLocalDate());
             recipe.setDescription(rs.getString("description"));
+            recipe.setDate(rs.getDate("date").toLocalDate());
             recipe.setPreparationTime(rs.getInt("preparation_time"));
             recipe.setCookTime(rs.getInt("cook_time"));
             recipe.setServings(rs.getInt("servings"));
             recipe.setNotes(rs.getString("notes"));
-            recipe.setOwner(UserDaoSQLImplementation.getInstance().getById(rs.getInt("owner_id")));
             return recipe;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,19 +55,20 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     public Map<String, Object> object2row(Recipe object) {
         Map<String, Object> row = new TreeMap<>();
         row.put("id", object.getId());
+        row.put("owner_id", object.getOwner().getId());
         row.put("title", object.getTitle());
-        row.put("date", Date.valueOf(object.getDate()));
         row.put("description", object.getDescription());
+        row.put("date", Date.valueOf(object.getDate()));
         row.put("preparation_time", object.getPreparationTime());
         row.put("cook_time", object.getCookTime());
         row.put("servings", object.getServings());
         row.put("notes", object.getNotes());
-        row.put("owner_id", object.getOwner().getId());
+
         return row;
     }
 
     @Override
-    public ArrayList<Recipe> searchByTitle(String text) {
+    public List<Recipe> searchByTitle(String text) {
         String sql = "SELECT * FROM recipe WHERE title LIKE '%" + text + "%'";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
@@ -82,7 +84,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     }
 
     @Override
-    public ArrayList<Recipe> searchByOwner(User owner) {
+    public List<Recipe> searchByOwner(User owner) {
         String sql = "SELECT * FROM recipe WHERE owner_id=?";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
