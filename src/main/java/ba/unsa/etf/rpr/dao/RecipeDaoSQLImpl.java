@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     private static RecipeDaoSQLImpl instance = null;
@@ -47,7 +48,16 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
 
     @Override
     public Map<String, Object> object2row(Recipe object) {
-        return null;
+        Map<String, Object> row = new TreeMap<>();
+        row.put("id", object.getId());
+        row.put("title", object.getTitle());
+        row.put("date", Date.valueOf(object.getDate()));
+        row.put("description", object.getDescription());
+        row.put("preparation_time", object.getPreparationTime());
+        row.put("cook_time", object.getCookTime());
+        row.put("servings", object.getServings());
+        row.put("notes", object.getNotes());
+        return row;
     }
 
     @Override
