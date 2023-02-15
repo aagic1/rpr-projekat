@@ -70,9 +70,4 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
         }
     }
 
-    // TODO - first create dao factory
-    @Override
-    public List<Recipe> getRecipes() {
-        return null;
-    }
 }

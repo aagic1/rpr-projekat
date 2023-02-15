@@ -12,6 +12,4 @@ public interface UserDao extends Dao<User> {
      * @return User
      */
     User searchByUsername(String username);
-
-    List<Recipe> getRecipes();
 }
