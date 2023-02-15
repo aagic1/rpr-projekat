@@ -59,6 +59,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
         row.put("cook_time", object.getCookTime());
         row.put("servings", object.getServings());
         row.put("notes", object.getNotes());
+        row.put("owner_id", object.getOwner().getId());
         return row;
     }
 
