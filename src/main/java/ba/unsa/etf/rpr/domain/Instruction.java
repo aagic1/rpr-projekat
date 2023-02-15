@@ -8,14 +8,16 @@ import java.util.Objects;
  */
 public class Instruction implements Idable{
     private int id;
+    private Recipe recipe;
     private int step;
     private String description;
 
     public Instruction() {
     }
 
-    public Instruction(int id, int step, String description) {
+    public Instruction(int id, Recipe recipe, int step, String description) {
         this.id = id;
+        this.recipe = recipe;
         this.step = step;
         this.description = description;
     }
@@ -36,14 +38,22 @@ public class Instruction implements Idable{
         this.description = description;
     }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
     @Override
     public void setId(int id) {
-
+        this.id = id;
     }
 
     @Override
     public int getId() {
-        return 0;
+        return id;
     }
 
     @Override
@@ -51,12 +61,12 @@ public class Instruction implements Idable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instruction that = (Instruction) o;
-        return id == that.id && step == that.step && Objects.equals(description, that.description);
+        return id == that.id && step == that.step && Objects.equals(recipe, that.recipe) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, step, description);
+        return Objects.hash(id, recipe, step, description);
     }
 
     @Override
