@@ -1,0 +1,23 @@
+.lblValidation {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+}
+
+#lblValidationEmail.valid {
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+#lblValidationEmail.invalid {
+    -fx-min-height: auto;
+}
+
+#lblValidationPassword.valid {
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+#lblValidationPassword.invalid {
+    -fx-min-height: 12px;
+}
+
