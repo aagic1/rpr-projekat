@@ -12,17 +12,19 @@ public class User implements Idable{
     private String username;
     private String email;
     private String password;
+    private String about;
 
     private List<Recipe> createdRecipes;
 
     public User() {
     }
 
-    public User(int id, String username, String email, String password) {
+    public User(int id, String username, String email, String password, String about) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.about = about;
     }
 
     public String getUsername() {
@@ -49,14 +51,12 @@ public class User implements Idable{
         this.password = password;
     }
 
-    @Override
-    public void setId(int id) {
-
+    public String getAbout() {
+        return about;
     }
 
-    @Override
-    public int getId() {
-        return 0;
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public List<Recipe> getCreatedRecipes() {
@@ -65,6 +65,17 @@ public class User implements Idable{
 
     public void setCreatedRecipes(List<Recipe> createdRecipes) {
         this.createdRecipes = createdRecipes;
+    }
+
+
+    @Override
+    public void setId(int id) {
+
+    }
+
+    @Override
+    public int getId() {
+        return 0;
     }
 
     /**
@@ -80,12 +91,12 @@ public class User implements Idable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(createdRecipes, user.createdRecipes);
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(about, user.about) && Objects.equals(createdRecipes, user.createdRecipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password, createdRecipes);
+        return Objects.hash(id, username, email, password, about, createdRecipes);
     }
 
     @Override
