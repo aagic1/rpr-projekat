@@ -2,7 +2,7 @@ package ba.unsa.etf.rpr.domain;
 
 import java.util.Objects;
 
-public class Recipe {
+public class Recipe implements Idable {
     private int id;
     private String title;
     private String description;
