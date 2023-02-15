@@ -14,7 +14,6 @@ public class User implements Idable{
     private String password;
     private String about;
 
-    private List<Recipe> createdRecipes;
 
     public User() {
     }
@@ -59,15 +58,6 @@ public class User implements Idable{
         this.about = about;
     }
 
-    public List<Recipe> getCreatedRecipes() {
-        return createdRecipes;
-    }
-
-    public void setCreatedRecipes(List<Recipe> createdRecipes) {
-        this.createdRecipes = createdRecipes;
-    }
-
-
     @Override
     public void setId(int id) {
 
@@ -78,25 +68,17 @@ public class User implements Idable{
         return 0;
     }
 
-    /**
-     * Adds new recipe to list
-     * @param recipe recipe to be added
-     */
-    public void addRecipe(Recipe recipe) {
-        createdRecipes.add(recipe);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(about, user.about) && Objects.equals(createdRecipes, user.createdRecipes);
+        return id == user.id && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(about, user.about);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password, about, createdRecipes);
+        return Objects.hash(id, username, email, password, about);
     }
 
     @Override
