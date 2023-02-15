@@ -21,3 +21,8 @@
     -fx-min-height: 12px;
 }
 
+#lblSignUp {
+    -fx-text-fill: blue;
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
