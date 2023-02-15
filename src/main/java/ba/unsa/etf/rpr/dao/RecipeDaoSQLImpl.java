@@ -42,6 +42,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
             recipe.setCookTime(rs.getInt("cook_time"));
             recipe.setServings(rs.getInt("servings"));
             recipe.setNotes(rs.getString("notes"));
+            recipe.setOwner(UserDaoSQLImplementation.getInstance().getById(rs.getInt("owner_id")));
             return recipe;
         } catch (SQLException e) {
             throw new RuntimeException(e);
