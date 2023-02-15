@@ -19,7 +19,7 @@ import java.util.TreeMap;
 public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements InstructionDao {
     private static InstructionDaoSQLImpl instance = null;
 
-    public InstructionDaoSQLImpl getInstance() {
+    public static InstructionDaoSQLImpl getInstance() {
         if (instance == null) {
             instance = new InstructionDaoSQLImpl();
         }
