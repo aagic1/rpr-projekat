@@ -3,8 +3,10 @@ package ba.unsa.etf.rpr.dao;
 import ba.unsa.etf.rpr.domain.Recipe;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -61,7 +63,18 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     }
 
     @Override
-    public Recipe searchByTitle(String text) {
-        return null;
+    public ArrayList<Recipe> searchByTitle(String text) {
+        String sql = "SELECT * FROM recipe WHERE title LIKE '%" + text + "%'";
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<Recipe> recipes = new ArrayList<>();
+            while (rs.next()) {
+                recipes.add(row2object(rs));
+            }
+            return recipes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
