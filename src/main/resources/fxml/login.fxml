@@ -80,7 +80,7 @@
       <HBox maxWidth="-Infinity" spacing="5.0" GridPane.halignment="CENTER" GridPane.rowIndex="8">
          <children>
             <Label text="Don't have an account?" />
-            <Label fx:id="lblSignUp" text="Sign up" />
+            <Label fx:id="lblSignUp" onMouseClicked="#actionSignup" text="Sign up" />
          </children>
          <GridPane.margin>
             <Insets top="10.0" />
