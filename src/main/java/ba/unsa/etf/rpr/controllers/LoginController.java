@@ -22,8 +22,7 @@ public class LoginController {
     public Label lblValidationEmail;
     public Label lblValidationPassword;
     public Button btnLogin;
-
-
+    public Button btnSignup;
 
 
     public void actionLogin(ActionEvent actionEvent) {
@@ -63,7 +62,7 @@ public class LoginController {
 
     }
 
-    public void actionSignup(MouseEvent mouseEvent) {
+    public void actionSignup(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup.fxml"));
 //            loader.setController(new SignUpController());

@@ -12,11 +12,18 @@
 #lblValidationPassword.invalid,
 #lblValidationUsername.invalid,
 #lblValidationEmail.invalid {
-    -fx-max-height: 30px;
+    -fx-max-height: 20px;
 }
 
-#lblSignUp {
+#gridLogin #btnSignup {
     -fx-text-fill: blue;
     -fx-font-weight: bold;
     -fx-underline: true;
+    -fx-background-color: transparent;
 }
+
+#gridLogin #btnSignup:focused,
+#gridLogin #btnSignup:hover {
+    -fx-background-color: lightgray;
+}
+
