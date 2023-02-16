@@ -63,7 +63,7 @@ public class LoginController {
     public void actionSignup(MouseEvent mouseEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup.fxml"));
-            loader.setController(new SignUpController());
+//            loader.setController(new SignUpController());
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
             stage.setTitle("SignUp");
