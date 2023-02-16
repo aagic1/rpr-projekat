@@ -32,10 +32,8 @@ public class SignUpController {
             }
             Pair<Boolean, String> valid = validateEmail();
             if (valid.getKey()) {
-                lblValidationEmail.getStyleClass().removeAll("invalid");
                 lblValidationEmail.setText("");
             } else {
-                lblValidationEmail.getStyleClass().add("invalid");
                 lblValidationEmail.setText(valid.getValue());
             }
         });
@@ -45,10 +43,8 @@ public class SignUpController {
             }
             Pair<Boolean, String> validUsername = validateUsername();
             if (validUsername.getKey()) {
-                lblValidationUsername.getStyleClass().removeAll("invalid");
                 lblValidationUsername.setText("");
             } else {
-                lblValidationUsername.getStyleClass().add("invalid");
                 lblValidationUsername.setText(validUsername.getValue());
             }
         });
@@ -58,10 +54,8 @@ public class SignUpController {
             }
             Pair<Boolean, String> valid = validatePassword();
             if (valid.getKey()) {
-                lblValidationPassword.getStyleClass().removeAll("invalid");
                 lblValidationPassword.setText("");
             } else {
-                lblValidationPassword.getStyleClass().add("invalid");
                 lblValidationPassword.setText(valid.getValue());
             }
         });
