@@ -11,10 +11,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.util.Pair;
 
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignUpController {
+
     public TextField fldEmail;
     public TextField fldUsername;
     public PasswordField fldPassword;
@@ -26,57 +28,100 @@ public class SignUpController {
 
     @FXML
     public void initialize() {
-        fldEmail.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal) {
-                return;
-            }
-            Pair<Boolean, String> valid = validateEmail();
-            if (valid.getKey()) {
-                lblValidationEmail.setText("");
-            } else {
-                lblValidationEmail.setText(valid.getValue());
-            }
-        });
-        fldUsername.focusedProperty().addListener((obs, oldVal, newVal) -> {
+        addFocusListener(fldEmail, lblValidationEmail, SignUpController::validateEmail);
+        addFocusListener(fldUsername, lblValidationUsername, SignUpController::validateUsername);
+        addFocusListener(fldPassword, lblValidationPassword, SignUpController::validatePassword);
+
+//        fldEmail.focusedProperty().addListener((obs, oldVal, newVal) -> {
+//            if(newVal) {
+//                return;
+//            }
+//            Pair<Boolean, String> valid = validateEmail();
+//            if (valid.getKey()) {
+//                lblValidationEmail.setText("");
+//            } else {
+//                lblValidationEmail.setText(valid.getValue());
+//            }
+//        });
+//        fldUsername.focusedProperty().addListener((obs, oldVal, newVal) -> {
+//            if (newVal) {
+//                return;
+//            }
+//            Pair<Boolean, String> validUsername = validateUsername();
+//            if (validUsername.getKey()) {
+//                lblValidationUsername.setText("");
+//            } else {
+//                lblValidationUsername.setText(validUsername.getValue());
+//            }
+//        });
+//        fldPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+//            if(newVal) {
+//                return;
+//            }
+//            Pair<Boolean, String> valid = validatePassword();
+//            if (valid.getKey()) {
+//                lblValidationPassword.setText("");
+//            } else {
+//                lblValidationPassword.setText(valid.getValue());
+//            }
+//        });
+    }
+
+    /**
+     * Utility method for adding focus listener on TextFields / PasswordFields
+     * @param field - field on which to add focus listener
+     * @param lblMessage - label which displays message if field is not valid
+     * @param funValidate - validation function
+     */
+    private void addFocusListener(TextField field, Label lblMessage, Function<TextField, Pair<Boolean, String>> funValidate) {
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) {
                 return;
             }
-            Pair<Boolean, String> validUsername = validateUsername();
-            if (validUsername.getKey()) {
-                lblValidationUsername.setText("");
-            } else {
-                lblValidationUsername.setText(validUsername.getValue());
-            }
-        });
-        fldPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal) {
-                return;
-            }
-            Pair<Boolean, String> valid = validatePassword();
+            Pair<Boolean, String> valid = funValidate.apply(field);
             if (valid.getKey()) {
-                lblValidationPassword.setText("");
+                lblMessage.setText("");
             } else {
-                lblValidationPassword.setText(valid.getValue());
+                lblMessage.setText(valid.getValue());
             }
         });
     }
 
-    private Pair<Boolean, String> validatePassword() {
-        // validate if password is entered
-        if (fldPassword.getText().isBlank()) {
-            return new Pair<>(false, "Enter password");
+    /**
+     * Checks if entered email is valid
+     * @param fldEmail - TextField that contains entered email
+     * @return Pair of Boolean and String specifiying whether email is valid and error message if not valid
+     */
+    private static Pair<Boolean, String> validateEmail(TextField fldEmail) {
+        // validate if email is entered
+        if (fldEmail.getText().isBlank()) {
+            return new Pair<>(false, "Enter email");
         }
 
-        // validate password length
-        if (fldPassword.getText().length() < 6 || fldPassword.getText().length() > 45) {
-            return new Pair<>(false, "Invalid password");
+        // validate email using regex
+        String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(fldEmail.getText());
+        if (!matcher.matches()) {
+            return new Pair<>(false, "Invalid email adress");
         }
 
-        return new Pair<>(true, null);
+        // check if email is already in use
+        try {
+            User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
+            return new Pair<>(false, "Email is already linked to an account");
+        } catch (RecipeException e) {
+            return new Pair<>(true, null);
+        }
     }
 
-
-    private Pair<Boolean, String> validateUsername() {
+    /**
+     * Checks if entered username is valid
+     * @param fldUsername - TextField that contains entered username
+     * @return Pair of Boolean and String specifiying whether username is valid and error message if not valid
+     */
+    private static Pair<Boolean, String> validateUsername(TextField fldUsername) {
         // validate if username is entered
         if (fldUsername.getText().isBlank()) {
             return new Pair<>(false, "Enter username");
@@ -99,28 +144,22 @@ public class SignUpController {
         }
     }
 
-    private Pair<Boolean, String> validateEmail() {
-        // validate if email is entered
-        if (fldEmail.getText().isBlank()) {
-            return new Pair<>(false, "Enter email");
+    /**
+     * Checks if entered password is valid
+     * @param fldPassword - PasswordField that contains entered password
+     * @return Pair of Boolean and String specifiying whether password is valid and error message if not valid
+     */
+    private static Pair<Boolean, String> validatePassword(TextField fldPassword) {
+        // validate if password is entered
+        if (fldPassword.getText().isBlank()) {
+            return new Pair<>(false, "Enter password");
         }
 
-        // validate email using regex
-        String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(fldEmail.getText());
-        if (!matcher.matches()) {
-            return new Pair<>(false, "Invalid email adress");
+        // validate password length
+        if (fldPassword.getText().length() < 6 || fldPassword.getText().length() > 45) {
+            return new Pair<>(false, "Invalid password");
         }
-
-        // check if email is already in use
-        try {
-            User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
-            return new Pair<>(false, "Email is already linked to an account");
-        } catch (RecipeException e) {
-            return new Pair<>(true, null);
-        }
+        return new Pair<>(true, null);
     }
 
     public void actionSignup(ActionEvent actionEvent) {
