@@ -58,9 +58,14 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
     }
 
     @Override
-    public User searchByUsername(String username) throws RecipeException {
+    public User getByUsername(String username) throws RecipeException {
         String sql = "SELECT * FROM user WHERE username=?";
         return executeQueryUnique(sql, new Object[]{username});
     }
 
+    @Override
+    public User getByEmail(String email) throws RecipeException {
+        String sql = "SELECT * FROM user WHERE email=?";
+        return executeQueryUnique(sql, new Object[]{email});
+    }
 }
