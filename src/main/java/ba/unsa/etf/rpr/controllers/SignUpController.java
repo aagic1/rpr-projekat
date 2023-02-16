@@ -160,6 +160,7 @@ public class SignUpController {
         return new Pair<>(true, null);
     }
 
+
     public void actionSignup(ActionEvent actionEvent) {
         if (!validateEmail(fldEmail).getKey() || !validateUsername(fldUsername).getKey() || !validatePassword(fldPassword).getKey()) {
             System.out.println("Neka polja nisu validna");
@@ -171,6 +172,10 @@ public class SignUpController {
         } catch (RecipeException e) {
             new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
         }
+        closeWindow();
+    }
+
+    private void closeWindow() {
         ((Stage) fldEmail.getScene().getWindow()).close();
     }
 }
