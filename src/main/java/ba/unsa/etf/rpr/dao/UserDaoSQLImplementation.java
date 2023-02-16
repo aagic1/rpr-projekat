@@ -2,6 +2,7 @@ package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.domain.User;
+import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
     }
 
     @Override
-    public User row2object(ResultSet rs) {
+    public User row2object(ResultSet rs) throws RecipeException {
         User user = new User();
         try {
             user.setId(rs.getInt("id"));
@@ -41,7 +42,7 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
             user.setAbout(rs.getString("about"));
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
@@ -57,19 +58,9 @@ public class UserDaoSQLImplementation extends AbstractDao<User> implements UserD
     }
 
     @Override
-    public User searchByUsername(String username) {
+    public User searchByUsername(String username) throws RecipeException {
         String sql = "SELECT * FROM user WHERE username=?";
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return row2object(rs);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQueryUnique(sql, new Object[]{username});
     }
 
 }
