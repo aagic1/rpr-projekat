@@ -5,10 +5,8 @@ import ba.unsa.etf.rpr.domain.User;
 import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.function.Function;
@@ -163,6 +161,16 @@ public class SignUpController {
     }
 
     public void actionSignup(ActionEvent actionEvent) {
-
+        if (!validateEmail(fldEmail).getKey() || !validateUsername(fldUsername).getKey() || !validatePassword(fldPassword).getKey()) {
+            System.out.println("Neka polja nisu validna");
+            return;
+        }
+        User user = new User(0, fldUsername.getText(), fldEmail.getText(), fldPassword.getText(), null);
+        try {
+            DaoFactory.userDao().add(user);
+        } catch (RecipeException e) {
+            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
+        }
+        ((Stage) fldEmail.getScene().getWindow()).close();
     }
 }
