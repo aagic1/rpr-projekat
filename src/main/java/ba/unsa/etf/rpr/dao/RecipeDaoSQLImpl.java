@@ -48,7 +48,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
             recipe.setNotes(rs.getString("notes"));
             return recipe;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 

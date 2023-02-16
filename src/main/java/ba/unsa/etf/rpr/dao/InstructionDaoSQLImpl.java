@@ -47,7 +47,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
             instruction.setDescription(rs.getString("description"));
             return instruction;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
