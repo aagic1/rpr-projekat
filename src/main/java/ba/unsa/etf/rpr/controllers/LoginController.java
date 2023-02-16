@@ -26,40 +26,37 @@ public class LoginController {
 
 
     public void actionLogin(ActionEvent actionEvent) {
-        boolean validData = true;
-        lblValidationEmail.getStyleClass().removeAll("invalid");
-        lblValidationPassword.getStyleClass().removeAll("invalid");
+        boolean enteredData = true;
 
         String email = fldEmail.getText();
         String password = fldPassword.getText();
         if (email.isBlank()) {
-            validData = false;
-            lblValidationEmail.getStyleClass().add("invalid");
+            enteredData = false;
             lblValidationEmail.setText("Enter an email");
+        } else {
+            lblValidationEmail.setText("");
         }
         if (password.isBlank()) {
-            validData = false;
-            lblValidationPassword.getStyleClass().add("invalid");
+            enteredData = false;
             lblValidationPassword.setText("Enter a password");
+        } else {
+            lblValidationPassword.setText("");
         }
-        if (!validData) {
+        if (!enteredData) {
             return;
         }
-        User user;
+
+
         try {
-            user = DaoFactory.userDao().getByEmail(email);
+            User user = DaoFactory.userDao().getByEmail(email);
             if (!user.getPassword().equals(password)) {
-                lblValidationPassword.getStyleClass().add("invalid");
                 lblValidationPassword.setText("Incorrect password.");
             } else {
-                lblValidationPassword.getStyleClass().removeAll("invalid");
                 lblValidationPassword.setText("");
             }
         } catch (RecipeException e) {
-            lblValidationEmail.getStyleClass().add("invalid");
             lblValidationEmail.setText("Email is not linked with an account.");
         }
-
     }
 
     public void actionSignup(ActionEvent actionEvent) {
