@@ -12,6 +12,7 @@ import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -26,36 +27,8 @@ public class LoginController {
 
 
     public void actionLogin(ActionEvent actionEvent) {
-        boolean enteredData = true;
-
-        String email = fldEmail.getText();
-        String password = fldPassword.getText();
-        if (email.isBlank()) {
-            enteredData = false;
-            lblValidationEmail.setText("Enter an email");
-        } else {
-            lblValidationEmail.setText("");
-        }
-        if (password.isBlank()) {
-            enteredData = false;
-            lblValidationPassword.setText("Enter a password");
-        } else {
-            lblValidationPassword.setText("");
-        }
-        if (!enteredData) {
-            return;
-        }
-
-
-        try {
-            User user = DaoFactory.userDao().getByEmail(email);
-            if (!user.getPassword().equals(password)) {
-                lblValidationPassword.setText("Incorrect password.");
-            } else {
-                lblValidationPassword.setText("");
-            }
-        } catch (RecipeException e) {
-            lblValidationEmail.setText("Email is not linked with an account.");
+        if (validateCredentials(fldEmail, fldPassword)) {
+            System.out.println("valid credentials. Continue to main page");
         }
     }
 
@@ -72,6 +45,57 @@ public class LoginController {
             stage.show();
         } catch (IOException e) {
             new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
+        }
+    }
+
+    private boolean validateCredentials(TextField fldEmail, TextField fldPassword) {
+        Pair<Boolean, String> responseEmail = validateEmail(fldEmail);
+        boolean validEmail = responseEmail.getKey();
+        String messageEmail = responseEmail.getValue();
+        lblValidationEmail.setText(messageEmail);
+        if (!validEmail) {
+            return false;
+        }
+
+        Pair<Boolean, String> responsePassword = validatePassword(fldEmail, fldPassword);
+        boolean validPassword = responsePassword.getKey();
+        String messagePassword = responsePassword.getValue();
+        lblValidationPassword.setText(messagePassword);
+        if (!validPassword) {
+            return false;
+        }
+        return true;
+    }
+
+    private Pair<Boolean, String> validateEmail(TextField fldEmail) {
+        String email = fldEmail.getText();
+        if (email.isBlank()) {
+            return new Pair<>(false, "Enter an email");
+        }
+        try {
+            User user = DaoFactory.userDao().getByEmail(email);
+            return new Pair<>(true, "");
+        } catch (RecipeException e) {
+            return new Pair<>(false, "Email is not connected to an account.");
+        }
+    }
+
+    private Pair<Boolean, String> validatePassword(TextField fldEmail, TextField fldPassword) {
+        String password = fldPassword.getText();
+        if (password.isBlank()) {
+            return new Pair<>(false, "Enter password");
+        }
+        String email = fldEmail.getText();
+        try {
+            User user = DaoFactory.userDao().getByEmail(email);
+            if (user.getPassword().equals(password)) {
+                return new Pair<>(true, "");
+            } else {
+                return new Pair<>(false, "Incorrect password");
+            }
+        } catch (RecipeException e) {
+            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
+            return new Pair<>(false, "");
         }
     }
 }
