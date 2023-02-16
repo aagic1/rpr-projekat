@@ -28,7 +28,18 @@ public class LoginController {
 
     public void actionLogin(ActionEvent actionEvent) {
         if (validateCredentials(fldEmail, fldPassword)) {
-            System.out.println("valid credentials. Continue to main page");
+            Stage thisStage = ((Stage) btnLogin.getScene().getWindow());
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
+                thisStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+                thisStage.setTitle("E-kuharica");
+                thisStage.setResizable(true);
+                thisStage.show();
+                thisStage.setMinWidth(thisStage.getWidth());
+                thisStage.setMinHeight(thisStage.getHeight());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
