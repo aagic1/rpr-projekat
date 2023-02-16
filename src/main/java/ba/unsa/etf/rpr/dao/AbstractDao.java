@@ -1,6 +1,8 @@
 package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Idable;
+import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.sql.*;
 import java.util.AbstractMap;
@@ -50,55 +52,36 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
         return connection;
     }
 
-    public abstract T row2object(ResultSet rs);
+    public abstract T row2object(ResultSet rs) throws RecipeException;
 
-    public abstract Map<String, Object> object2row(T object);
+    public abstract Map<String, Object> object2row(T object) throws RecipeException;
 
     @Override
-    public T getById(int id) {
+    public T getById(int id) throws RecipeException {
         String sql = "SELECT * FROM " + this.tableName + " WHERE id=?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList<T> resultList = new ArrayList<>();
-            while (rs.next()) {
-                resultList.add(row2object(rs));
-            }
-            return resultList.get(0);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQueryUnique(sql, new Object[]{id});
     }
 
+
+
     @Override
-    public List<T> getAll() {
+    public List<T> getAll() throws RecipeException{
         String sql = "SELECT * FROM " + this.tableName;
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList<T> resultList = new ArrayList<>();
-            while (rs.next()) {
-                resultList.add(row2object(rs));
-            }
-            return resultList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQuery(sql, null);
     }
 
     @Override
-    public T add(T item) {
+    public T add(T item) throws RecipeException {
         Map<String, Object> row = object2row(item);
         Map.Entry<String, String> columns = prepareInsertParts(row);
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("INSERT INTO ").append(this.tableName)
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("INSERT INTO ").append(this.tableName)
                 .append(" (").append(columns.getKey()).append(") ")
                 .append(" VALUES(").append(columns.getValue()).append(");");
 
         try {
-            PreparedStatement pstmt = connection.prepareStatement(builder.toString(), Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = connection.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
             int counter = 1;
             for (Map.Entry<String, Object> entry : row.entrySet()) {
                 if (entry.getKey().equals("id")) {
@@ -115,12 +98,12 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
 
             return item;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
     @Override
-    public T update(T item) {
+    public T update(T item) throws RecipeException {
         Map<String, Object> row = object2row(item);
         String updateColumns = prepareUpdateParts(row);
         StringBuilder builder = new StringBuilder();
@@ -141,21 +124,21 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
             pstmt.executeUpdate();
             return item;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void delete(T item) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("DELETE FROM ").append(this.tableName)
+    public void delete(T item) throws RecipeException {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("DELETE FROM ").append(this.tableName)
                 .append("WHERE id=?");
         try {
-            PreparedStatement pstmt = connection.prepareStatement(builder.toString());
+            PreparedStatement pstmt = connection.prepareStatement(sqlBuilder.toString());
             pstmt.setObject(1, item.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
@@ -196,4 +179,45 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
         return new AbstractMap.SimpleEntry<>(columns.toString(), questions.toString());
     }
 
+    /**
+     * Utility method for executing any kind of query
+     * @param query - SQL query
+     * @param params - parameters for query
+     * @return List of objects from database
+     * @throws RecipeException in case of error with db
+     */
+    public List<T> executeQuery(String query, Object[] params) throws RecipeException {
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            if (params != null) {
+                for (int i = 1; i <= params.length; i++) {
+                    pstmt.setObject(i, params[i-1]);
+                }
+            }
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList<T> resultList = new ArrayList<>();
+            while (rs.next()) {
+                resultList.add(row2object(rs));
+            }
+            return resultList;
+        } catch (SQLException e) {
+            throw new RecipeException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Utility method for query execution that always returns a single record
+     * @param query - SQL query that returns single record
+     * @param params - parameters for query
+     * @return single object from database
+     * @throws RecipeException in case when object is not found
+     */
+    public T executeQueryUnique(String query, Object[] params) throws RecipeException{
+        List<T> result = executeQuery(query, params);
+        if (result != null && result.size() == 1) {
+            return result.get(0);
+        } else {
+            throw new RecipeException("Object not found");
+        }
+    }
 }
