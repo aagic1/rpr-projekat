@@ -3,6 +3,7 @@ package ba.unsa.etf.rpr.dao;
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
     }
 
     @Override
-    public Instruction row2object(ResultSet rs) {
+    public Instruction row2object(ResultSet rs) throws RecipeException {
         Instruction instruction = new Instruction();
         try {
             instruction.setId(rs.getInt("id"));
@@ -61,19 +62,8 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
     }
 
     @Override
-    public List<Instruction> getInstructionsByRecipe(Recipe recipe) {
+    public List<Instruction> getInstructionsByRecipe(Recipe recipe) throws RecipeException {
         String sql = "SELECT * FROM instruction WHERE recipe_id=?";
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setInt(1, recipe.getId());
-            ResultSet rs = pstmt.executeQuery();
-            List<Instruction> instructions = new ArrayList<>();
-            while (rs.next()) {
-                instructions.add(row2object(rs));
-            }
-            return instructions;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQuery(sql, new Object[]{recipe.getId()});
     }
 }
