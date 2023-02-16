@@ -2,6 +2,7 @@ package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +37,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
     }
 
     @Override
-    public Ingredient row2object(ResultSet rs) {
+    public Ingredient row2object(ResultSet rs) throws RecipeException {
         try {
             Ingredient ingredient = new Ingredient();
             ingredient.setId(rs.getInt("id"));
@@ -46,7 +47,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
             ingredient.setRecipe(DaoFactory.recipeDao().getById(rs.getInt("recipe_id")));
             return ingredient;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RecipeException(e.getMessage(), e);
         }
     }
 
@@ -63,19 +64,8 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
     }
 
     @Override
-    public List<Ingredient> getIngredientsByRecipe(Recipe recipe) {
+    public List<Ingredient> getIngredientsByRecipe(Recipe recipe) throws RecipeException{
         String sql = "SELECT * FROM ingredient WHERE recipe_id=?";
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setInt(1, recipe.getId());
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList<Ingredient> ingredients = new ArrayList<>();
-            while (rs.next()) {
-                ingredients.add(row2object(rs));
-            }
-            return ingredients;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQuery(sql, new Object[]{recipe.getId()});
     }
 }

@@ -54,7 +54,7 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
 
     public abstract T row2object(ResultSet rs) throws RecipeException;
 
-    public abstract Map<String, Object> object2row(T object) throws RecipeException;
+    public abstract Map<String, Object> object2row(T object);
 
     @Override
     public T getById(int id) throws RecipeException {
