@@ -46,7 +46,7 @@ public class LoginController {
             }
         } catch (RecipeException e) {
             lblValidationEmail.getStyleClass().add("invalid");
-            lblValidationEmail.setText("Email you entered is not linked with an account.");
+            lblValidationEmail.setText("Email is not linked with an account.");
         }
 
     }

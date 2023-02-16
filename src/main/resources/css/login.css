@@ -1,6 +1,5 @@
 .lblValidation {
     -fx-text-fill: red;
-    -fx-font-size: 12px;
 }
 
 #lblValidationPassword.valid,
@@ -13,7 +12,7 @@
 #lblValidationPassword.invalid,
 #lblValidationUsername.invalid,
 #lblValidationEmail.invalid {
-    -fx-min-height: 12px;
+    -fx-max-height: 30px;
 }
 
 #lblSignUp {
