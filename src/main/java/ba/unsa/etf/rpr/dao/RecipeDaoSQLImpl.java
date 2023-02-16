@@ -2,6 +2,7 @@ package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.domain.User;
+import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -33,7 +34,7 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     }
 
     @Override
-    public Recipe row2object(ResultSet rs) {
+    public Recipe row2object(ResultSet rs) throws RecipeException {
         Recipe recipe = new Recipe();
         try {
             recipe.setId(rs.getInt("id"));
@@ -68,35 +69,14 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
     }
 
     @Override
-    public List<Recipe> searchByTitle(String text) {
-        String sql = "SELECT * FROM recipe WHERE title LIKE '%" + text + "%'";
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList<Recipe> recipes = new ArrayList<>();
-            while (rs.next()) {
-                recipes.add(row2object(rs));
-            }
-            return recipes;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Recipe> searchByTitle(String text) throws RecipeException {
+        String sql = "SELECT * FROM recipe WHERE title LIKE CONCAT( '%',?,'%')";
+        return executeQuery(sql, new Object[]{text});
     }
 
     @Override
-    public List<Recipe> searchByOwner(User owner) {
+    public List<Recipe> searchByOwner(User owner) throws RecipeException {
         String sql = "SELECT * FROM recipe WHERE owner_id=?";
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setInt(1, owner.getId());
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList<Recipe> recipes = new ArrayList<>();
-            while (rs.next()) {
-                recipes.add(row2object(rs));
-            }
-            return recipes;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return executeQuery(sql, new Object[]{owner.getId()});
     }
 }
