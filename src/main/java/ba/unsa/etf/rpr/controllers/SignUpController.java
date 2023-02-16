@@ -52,7 +52,35 @@ public class SignUpController {
                 lblValidationUsername.setText(validUsername.getValue());
             }
         });
+        fldPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal) {
+                return;
+            }
+            Pair<Boolean, String> valid = validatePassword();
+            if (valid.getKey()) {
+                lblValidationPassword.getStyleClass().removeAll("invalid");
+                lblValidationPassword.setText("");
+            } else {
+                lblValidationPassword.getStyleClass().add("invalid");
+                lblValidationPassword.setText(valid.getValue());
+            }
+        });
     }
+
+    private Pair<Boolean, String> validatePassword() {
+        // validate if password is entered
+        if (fldPassword.getText().isBlank()) {
+            return new Pair<>(false, "Enter password");
+        }
+
+        // validate password length
+        if (fldPassword.getText().length() < 6 || fldPassword.getText().length() > 45) {
+            return new Pair<>(false, "Invalid password");
+        }
+
+        return new Pair<>(true, null);
+    }
+
 
     private Pair<Boolean, String> validateUsername() {
         // validate if username is entered
