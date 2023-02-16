@@ -49,9 +49,12 @@ public class LoginController {
         User user;
         try {
             user = DaoFactory.userDao().getByEmail(email);
-            if (user.getPassword() != password) {
+            if (!user.getPassword().equals(password)) {
                 lblValidationPassword.getStyleClass().add("invalid");
                 lblValidationPassword.setText("Incorrect password.");
+            } else {
+                lblValidationPassword.getStyleClass().removeAll("invalid");
+                lblValidationPassword.setText("");
             }
         } catch (RecipeException e) {
             lblValidationEmail.getStyleClass().add("invalid");
