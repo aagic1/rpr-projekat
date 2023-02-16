@@ -15,8 +15,8 @@ public class AppFX extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
         primaryStage.show();
-        primaryStage.setMinHeight(primaryStage.getHeight());
-        primaryStage.setMinWidth(primaryStage.getWidth());
+//        primaryStage.setMinHeight(primaryStage.getHeight());
+//        primaryStage.setMinWidth(primaryStage.getWidth());
     }
 
     public static void main(String[] args) {

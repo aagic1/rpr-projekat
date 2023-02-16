@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="5.0" vgap="5.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="5.0" vgap="5.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.controllers.LoginController">
     <stylesheets>
         <URL value="@/css/login.css" />
     </stylesheets>
@@ -41,7 +41,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <TextField prefWidth="250.0" GridPane.rowIndex="2">
+      <TextField fx:id="fldEmail" prefWidth="250.0" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></TextField>
@@ -54,7 +54,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <PasswordField GridPane.rowIndex="5">
+      <PasswordField fx:id="fldPassword" GridPane.rowIndex="5">
          <font>
             <Font size="14.0" />
          </font></PasswordField>
@@ -63,7 +63,7 @@
             <String fx:value="lblValidation" />
             <String fx:value="valid" />
          </styleClass></Label>
-      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Login" GridPane.rowIndex="7">
+      <Button fx:id="btnLogin" onAction="#actionLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Login" GridPane.rowIndex="7">
          <padding>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </padding>
