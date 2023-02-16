@@ -39,9 +39,45 @@ public class SignUpController {
                 lblValidationEmail.setText(valid.getValue());
             }
         });
+        fldUsername.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                return;
+            }
+            Pair<Boolean, String> validUsername = validateUsername();
+            if (validUsername.getKey()) {
+                lblValidationUsername.getStyleClass().removeAll("invalid");
+                lblValidationUsername.setText("");
+            } else {
+                lblValidationUsername.getStyleClass().add("invalid");
+                lblValidationUsername.setText(validUsername.getValue());
+            }
+        });
     }
 
-    public Pair<Boolean, String> validateEmail() {
+    private Pair<Boolean, String> validateUsername() {
+        // validate if username is entered
+        if (fldUsername.getText().isBlank()) {
+            return new Pair<>(false, "Enter username");
+        }
+
+        // Validate username using regex
+        String regex = "^[A-Za-z]\\w{4,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(fldUsername.getText());
+        if (!matcher.matches()) {
+            return new Pair<>(false, "Invalid username.");
+        }
+
+        // check if username is already taken
+        try {
+            User user = DaoFactory.userDao().getByUsername(fldUsername.getText());
+            return new Pair<>(false, "Username is already taken");
+        } catch (RecipeException e) {
+            return new Pair<>(true, null);
+        }
+    }
+
+    private Pair<Boolean, String> validateEmail() {
         // validate if email is entered
         if (fldEmail.getText().isBlank()) {
             return new Pair<>(false, "Enter email");
