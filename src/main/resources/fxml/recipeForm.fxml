@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<GridPane hgap="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.controllers.RecipeFormController">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -29,33 +28,46 @@
    <children>
       <VBox>
          <children>
-            <Label text="Title" />
-            <TextArea prefHeight="50.0" prefWidth="200.0" wrapText="true" />
+            <Label text="Title">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <TextArea prefHeight="50.0" prefWidth="200.0" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></TextArea>
             <Label text="Description">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
             </Label>
             <TextArea prefHeight="300.0" prefWidth="300.0" wrapText="true" />
          </children>
       </VBox>
-      <ScrollPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <ScrollPane vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <content>
             <VBox spacing="10.0">
                <children>
-                  <VBox>
+                  <VBox spacing="10.0">
                      <children>
                         <Label text="Ingredients">
                            <VBox.margin>
-                              <Insets bottom="5.0" />
+                              <Insets />
                            </VBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
                         </Label>
-                        <VBox>
+                        <VBox fx:id="boxIngredients" spacing="10.0">
                            <children>
                               <GridPane hgap="10.0">
                                 <columnConstraints>
                                   <ColumnConstraints />
                                   <ColumnConstraints />
+                                    <ColumnConstraints />
                                     <ColumnConstraints />
                                 </columnConstraints>
                                 <rowConstraints>
@@ -79,56 +91,20 @@
                                           <Insets left="5.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField maxWidth="70.0" GridPane.rowIndex="1" />
-                                    <TextField maxWidth="-Infinity" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField maxWidth="70.0" promptText="Amount" GridPane.rowIndex="1" />
+                                    <TextField maxWidth="-Infinity" prefWidth="95.0" promptText="Meas. unit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" promptText="Ingredient" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Button mnemonicParsing="false" text="Delete ingredient" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </GridPane>
-                              <GridPane hgap="10.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints vgrow="SOMETIMES" />
-                                    <RowConstraints vgrow="SOMETIMES" />
-                                    <RowConstraints vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Label text="Amount">
-                                       <GridPane.margin>
-                                          <Insets left="5.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <Label prefWidth="80.0" text="Measurement unit" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
-                                       <GridPane.margin>
-                                          <Insets left="5.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <Label text="Ingredient" GridPane.columnIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="5.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField maxWidth="70.0" GridPane.rowIndex="1" />
-                                    <TextField prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </GridPane>
                            </children>
                         </VBox>
                         <HBox spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Remove last ingredient" />
-                              <Button alignment="CENTER" mnemonicParsing="false" text="Add new ingredient" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#addIngredient" text="Add new ingredient" />
                            </children>
                         </HBox>
                      </children>
@@ -136,7 +112,10 @@
                   <Separator prefWidth="200.0" />
                   <VBox>
                      <children>
-                        <Label text="Instructions" />
+                        <Label text="Instructions">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Label>
                         <VBox>
                            <children>
                               <HBox spacing="10.0">
@@ -179,7 +158,10 @@
                   <Separator prefWidth="200.0" />
                   <VBox>
                      <children>
-                        <Label text="Notes" />
+                        <Label text="Notes">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Label>
                         <TextArea />
                      </children>
                   </VBox>
@@ -187,8 +169,11 @@
             </VBox>
          </content>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </ScrollPane>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
         <buttons>
