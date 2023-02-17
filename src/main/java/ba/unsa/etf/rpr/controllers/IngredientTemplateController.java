@@ -5,16 +5,16 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 public class IngredientTemplateController {
-    private Pane ingredientsPane;
+    private RecipeFormController recipeFormController;
 
-    public IngredientTemplateController(Pane ingredientsPane) {
-        this.ingredientsPane = ingredientsPane;
+    public IngredientTemplateController(RecipeFormController recipeFormController) {
+        this.recipeFormController = recipeFormController;
     }
 
 
     public void deleteIngredient(ActionEvent actionEvent) {
         Node button = (Node) actionEvent.getSource();
-        Node row = button.getParent();
-        ingredientsPane.getChildren().remove(row);
+        Node ingredient = button.getParent();
+        recipeFormController.removeIngredient(ingredient);
     }
 }

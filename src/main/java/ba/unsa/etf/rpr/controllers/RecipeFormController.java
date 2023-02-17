@@ -5,10 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -47,11 +46,11 @@ public class RecipeFormController {
     public void addIngredient(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ingredientTemplate.fxml"));
-            loader.setController(new IngredientTemplateController(boxIngredients));
-            Node node = loader.load();
-            boxIngredients.getChildren().add(node);
+            loader.setController(new IngredientTemplateController(this));
+            Pane pane = loader.load();
+            boxIngredients.getChildren().add(pane);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
         }
     }
 
@@ -64,13 +63,17 @@ public class RecipeFormController {
             number.setText((boxInstructions.getChildren().size() + 1) + ".");
             boxInstructions.getChildren().add(hbox);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
         }
     }
 
     public void removeStep(Node n) {
         boxInstructions.getChildren().remove(n);
         fixStepNumbering();
+    }
+
+    public void removeIngredient(Node n) {
+        boxIngredients.getChildren().remove(n);
     }
 
     private void fixStepNumbering() {
