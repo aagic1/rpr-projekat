@@ -28,7 +28,7 @@ public class RecipeFormController {
     public void addStep(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/stepTemplate.fxml"));
-            loader.setController(new StepTemplateController());
+            loader.setController(new StepTemplateController(this));
             HBox hbox = loader.load();
             Label number = (Label) hbox.getChildren().get(0);
             number.setText((boxInstructions.getChildren().size() + 1) + ".");
@@ -36,5 +36,9 @@ public class RecipeFormController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void removeStep(Node n) {
+        boxInstructions.getChildren().remove(n);
     }
 }
