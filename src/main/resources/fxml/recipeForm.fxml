@@ -110,13 +110,13 @@
                      </children>
                   </VBox>
                   <Separator prefWidth="200.0" />
-                  <VBox>
+                  <VBox spacing="10.0">
                      <children>
                         <Label text="Instructions">
                            <font>
                               <Font size="24.0" />
                            </font></Label>
-                        <VBox>
+                        <VBox fx:id="boxInstructions" spacing="10.0">
                            <children>
                               <HBox spacing="10.0">
                                  <children>
@@ -125,32 +125,18 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextArea prefHeight="100.0" wrapText="true" />
+                                    <TextArea prefHeight="80.0" promptText="Instructions..." wrapText="true" />
+                                    <Button mnemonicParsing="false" text="Remove step" visible="false" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="10.0" />
+                                    <Insets />
                                  </VBox.margin>
-                              </HBox>
-                              <HBox spacing="10.0">
-                                 <children>
-                                    <Label text="2.">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                    <TextArea prefHeight="100.0" wrapText="true">
-                                       <HBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </HBox.margin>
-                                    </TextArea>
-                                 </children>
                               </HBox>
                            </children>
                         </VBox>
                         <HBox spacing="10.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Remove last step" />
-                              <Button mnemonicParsing="false" text="Add new step" />
+                              <Button mnemonicParsing="false" onAction="#addStep" text="Add step" />
                            </children>
                         </HBox>
                      </children>
