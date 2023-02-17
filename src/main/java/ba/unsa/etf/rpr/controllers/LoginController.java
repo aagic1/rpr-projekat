@@ -7,11 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -43,7 +41,7 @@ public class LoginController {
         }
     }
 
-    public void actionSignup(ActionEvent actionEvent) {
+    public void actionOpenSignupForm(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup.fxml"));
 //            loader.setController(new SignUpController());
