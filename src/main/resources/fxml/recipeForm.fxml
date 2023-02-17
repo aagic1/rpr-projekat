@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -26,25 +27,110 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <VBox>
+      <VBox spacing="10.0">
          <children>
-            <Label text="Title">
-               <font>
-                  <Font size="24.0" />
-               </font></Label>
-            <TextArea prefHeight="50.0" prefWidth="200.0" wrapText="true">
-               <font>
-                  <Font size="14.0" />
-               </font></TextArea>
-            <Label text="Description">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <TextArea prefHeight="300.0" prefWidth="300.0" wrapText="true" />
+            <VBox>
+               <children>
+                  <Label text="Title">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <TextArea prefHeight="50.0" prefWidth="300.0" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextArea>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Description">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <TextArea prefHeight="300.0" prefWidth="300.0" wrapText="true" />
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding></Separator>
+            <GridPane hgap="10.0" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+               <children>
+                  <Label text="Preparation time">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Cook time" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="3.0" GridPane.columnIndex="1">
+                     <children>
+                        <Spinner fx:id="prepTimeHours" minWidth="-Infinity" prefWidth="60.0" />
+                        <Label text="h">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Spinner fx:id="cookTimeHours" minWidth="-Infinity" prefWidth="60.0" />
+                        <Label text="h">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="3.0" GridPane.columnIndex="2">
+                     <children>
+                        <Spinner fx:id="prepTimeMinutes" prefWidth="60.0" />
+                        <Label text="min">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="3.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <Spinner fx:id="cookTimeMinutes" prefWidth="60.0" />
+                        <Label text="min">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="Servings">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Spinner fx:id="servings" prefWidth="80.0" />
+               </children>
+            </HBox>
          </children>
       </VBox>
       <ScrollPane vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
@@ -58,7 +144,7 @@
                               <Insets />
                            </VBox.margin>
                            <font>
-                              <Font size="24.0" />
+                              <Font size="16.0" />
                            </font>
                         </Label>
                         <VBox fx:id="boxIngredients" spacing="10.0">
@@ -81,7 +167,7 @@
                                           <Insets left="5.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <Label prefWidth="80.0" text="Measurement unit" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
+                                    <Label prefWidth="80.0" text="Measurement unit" wrapText="true" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="5.0" />
                                        </GridPane.margin>
@@ -114,7 +200,7 @@
                      <children>
                         <Label text="Instructions">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="16.0" />
                            </font></Label>
                         <VBox fx:id="boxInstructions" spacing="10.0">
                            <children>
@@ -122,7 +208,7 @@
                                  <children>
                                     <Label text="1.">
                                        <font>
-                                          <Font size="24.0" />
+                                          <Font size="16.0" />
                                        </font>
                                     </Label>
                                     <TextArea prefHeight="80.0" promptText="Instructions..." wrapText="true" />
@@ -146,7 +232,7 @@
                      <children>
                         <Label text="Notes">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="16.0" />
                            </font></Label>
                         <TextArea />
                      </children>
@@ -161,20 +247,17 @@
             <Insets />
          </opaqueInsets>
       </ScrollPane>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+      <ButtonBar GridPane.columnSpan="2" GridPane.rowIndex="2">
         <buttons>
-          <Button cancelButton="true" mnemonicParsing="false" text="Cancel" />
+          <Button cancelButton="true" mnemonicParsing="false" onAction="#actionCancel" text="Cancel" />
             <Button defaultButton="true" mnemonicParsing="false" text="Save" />
         </buttons>
          <GridPane.margin>
             <Insets top="40.0" />
          </GridPane.margin>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
       </ButtonBar>
    </children>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
 </GridPane>
