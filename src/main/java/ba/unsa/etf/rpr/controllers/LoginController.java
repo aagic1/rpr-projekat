@@ -28,15 +28,18 @@ public class LoginController {
         if (validateCredentials(fldEmail, fldPassword)) {
             Stage thisStage = ((Stage) btnLogin.getScene().getWindow());
             try {
+                User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
                 thisStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+                HomeController homeController = loader.getController();
+                homeController.initUser(user);
                 thisStage.setTitle("E-kuharica");
                 thisStage.setResizable(true);
                 thisStage.show();
                 thisStage.setMinWidth(thisStage.getWidth());
                 thisStage.setMinHeight(thisStage.getHeight());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | RecipeException e) {
+                new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
             }
         }
     }
