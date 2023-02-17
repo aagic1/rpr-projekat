@@ -23,7 +23,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
-            <Button mnemonicParsing="false" text="Add recipe">
+            <Button mnemonicParsing="false" text="Add recipe" onAction="#openCreateRecipe">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
