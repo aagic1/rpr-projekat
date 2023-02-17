@@ -1,6 +1,6 @@
 package ba.unsa.etf.rpr.controllers;
 
-import com.mysql.cj.result.IntegerValueFactory;
+import ba.unsa.etf.rpr.domain.Ingredient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,23 +12,28 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeFormController {
     public VBox boxIngredients;
     public VBox boxInstructions;
-    public Spinner prepTimeHours;
-    public Spinner cookTimeHours;
-    public Spinner prepTimeMinutes;
-    public Spinner cookTimeMinutes;
-    public Spinner servings;
+    public Spinner spinnerPrepHours;
+    public Spinner spinnerCookHours;
+    public Spinner spinnerPrepMinutes;
+    public Spinner spinnerCookMinutes;
+    public Spinner spinnerServings;
+    public TextArea textTitle;
+    public TextArea textDescription;
+    public TextArea textNotes;
 
     @FXML
     public void initialize() {
-        initSpinnerMinutes(prepTimeMinutes);
-        initSpinnerMinutes(cookTimeMinutes);
-        initSpinnerHours(prepTimeHours);
-        initSpinnerHours(cookTimeHours);
-        initSpinnerServings(servings);
+        initSpinnerMinutes(spinnerPrepMinutes);
+        initSpinnerMinutes(spinnerCookMinutes);
+        initSpinnerHours(spinnerPrepHours);
+        initSpinnerHours(spinnerCookHours);
+        initSpinnerServings(spinnerServings);
     }
 
     private void initSpinnerMinutes(Spinner spinner) {
@@ -47,8 +52,8 @@ public class RecipeFormController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ingredientTemplate.fxml"));
             loader.setController(new IngredientTemplateController(this));
-            Pane pane = loader.load();
-            boxIngredients.getChildren().add(pane);
+            HBox hbox = loader.load();
+            boxIngredients.getChildren().add(hbox);
         } catch (IOException e) {
             new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
         }
