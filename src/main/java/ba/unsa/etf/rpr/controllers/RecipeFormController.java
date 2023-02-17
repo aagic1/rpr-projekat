@@ -32,7 +32,7 @@ public class RecipeFormController {
     }
 
     private void initSpinnerMinutes(Spinner spinner) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59));
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 55, 0, 5));
     }
 
     private void initSpinnerHours(Spinner spinner) {
@@ -54,6 +54,10 @@ public class RecipeFormController {
         }
     }
 
+    public void removeIngredient(Node n) {
+        boxIngredients.getChildren().remove(n);
+    }
+
     public void addStep(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/stepTemplate.fxml"));
@@ -72,9 +76,7 @@ public class RecipeFormController {
         fixStepNumbering();
     }
 
-    public void removeIngredient(Node n) {
-        boxIngredients.getChildren().remove(n);
-    }
+
 
     private void fixStepNumbering() {
         int counter = 1;
