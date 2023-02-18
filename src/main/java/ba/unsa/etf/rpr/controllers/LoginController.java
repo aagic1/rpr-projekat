@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -70,14 +69,15 @@ public class LoginController {
 
         if (email.isBlank()) {
             lblValidationEmail.setText("Enter email");
-            if (password.isBlank()) {
-                lblValidationPassword.setText("Enter password");
-            }
             return false;
         }
 
         try {
             userManager.validateLoginEmail(email);
+            if (password.isBlank()) {
+                lblValidationPassword.setText("Enter password");
+                return false;
+            }
         } catch (RecipeException e) {
             lblValidationEmail.setText(e.getMessage());
             return false;
