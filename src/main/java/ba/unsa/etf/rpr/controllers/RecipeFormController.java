@@ -1,8 +1,10 @@
 package ba.unsa.etf.rpr.controllers;
 
+import ba.unsa.etf.rpr.business.RecipeManager;
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,13 +13,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFormController {
+    public TextField fldIngredient;
+    public TextArea textInstruction;
+    private RecipeManager recipeManager = new RecipeManager();
     public VBox boxIngredients;
     public VBox boxInstructions;
     public Spinner spinnerPrepHours;
@@ -31,6 +35,86 @@ public class RecipeFormController {
 
     @FXML
     public void initialize() {
+        initSpinners();
+        initListeners();
+    }
+
+    private void initListeners() {
+        textTitle.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateTitle(textTitle.getText());
+                    textTitle.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    textTitle.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        textDescription.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateDescription(textDescription.getText());
+                    textDescription.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    textDescription.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerPrepMinutes.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
+                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
+                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerPrepMinutes.getStyleClass().add("invalidField");
+                    spinnerPrepHours.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerPrepHours.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
+                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
+                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerPrepMinutes.getStyleClass().add("invalidField");
+                    spinnerPrepHours.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerServings.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateServings(Integer.parseInt(spinnerServings.getEditor().getText()));
+                    spinnerServings.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerServings.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        fldIngredient.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                if (fldIngredient.getText().isBlank()) {
+                    fldIngredient.getStyleClass().add("invalidField");
+                } else {
+                    fldIngredient.getStyleClass().removeAll("invalidField");
+                }
+            }
+        });
+        textInstruction.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                if (textInstruction.getText().isBlank()) {
+                    textInstruction.getStyleClass().add("invalidField");
+                } else {
+                    textInstruction.getStyleClass().removeAll("invalidField");
+                }
+            }
+        });
+    }
+
+    private void initSpinners() {
         initSpinnerMinutes(spinnerPrepMinutes);
         initSpinnerMinutes(spinnerCookMinutes);
         initSpinnerHours(spinnerPrepHours);
@@ -53,7 +137,7 @@ public class RecipeFormController {
     public void addIngredient(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ingredientTemplate.fxml"));
-            loader.setController(new IngredientTemplateController(this));
+            loader.setController(new IngredientTemplateController(this, recipeManager));
             HBox hbox = loader.load();
             boxIngredients.getChildren().add(hbox);
         } catch (IOException e) {
@@ -116,10 +200,14 @@ public class RecipeFormController {
         recipe.setPreparationTime(getPrepTime());
         recipe.setCookTime(getCookTime());
         recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
-        List<Ingredient> ingredients = getIngredients();
-        List<Instruction> instructions = getInstructions();
+        List<Ingredient> ingredients = getAllIngredients();
+        List<Instruction> instructions = getAllInstructions();
 
-        if (!isValidRecipe(recipe) || !areValidIngredients(ingredients) || !areValidInstructions(instructions)) {
+        try {
+            recipeManager.validateRecipe(recipe);
+            recipeManager.validateIngredients(ingredients);
+            recipeManager.validateInstructions(instructions);
+        } catch (RecipeException e){
             showInvalidRecipeFields();
             showInvalidIngredientFields();
             showInvalidInstructionFields();
@@ -180,45 +268,6 @@ public class RecipeFormController {
         }
     }
 
-    private boolean isValidRecipe(Recipe recipe) {
-        return isValidTitle(recipe.getTitle()) && isValidDescription(recipe.getDescription())
-                && isValidServings(recipe.getServings()) && isValidPreparationTime(recipe.getPreparationTime());
-    }
-
-    private boolean isValidTitle(String title) {
-        return !title.isBlank();
-    }
-
-    private boolean isValidDescription(String description) {
-        return !description.isBlank();
-    }
-
-    private boolean isValidServings(int servings) {
-        return servings > 0;
-    }
-
-    private boolean isValidPreparationTime(int prepTime) {
-        return prepTime > 0;
-    }
-
-    private boolean areValidIngredients(List<Ingredient> ingredients) {
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getName().isBlank()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean areValidInstructions(List<Instruction> instructions) {
-        for (Instruction instruction : instructions) {
-            if (instruction.getDescription().isBlank()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private int getCookTime() {
         int minutes = Integer.parseInt(spinnerCookMinutes.getEditor().getText());
         int hours = Integer.parseInt(spinnerCookHours.getEditor().getText());
@@ -231,7 +280,7 @@ public class RecipeFormController {
         return hours*60 + minutes;
     }
 
-    private List<Ingredient> getIngredients() {
+    private List<Ingredient> getAllIngredients() {
         List<Ingredient> ingredients = new ArrayList<>();
         for (Node n : boxIngredients.getChildren()) {
             HBox hbox = (HBox) n;
@@ -243,7 +292,7 @@ public class RecipeFormController {
         return ingredients;
     }
 
-    private List<Instruction> getInstructions() {
+    private List<Instruction> getAllInstructions() {
         List<Instruction> instructions = new ArrayList<>();
         int counter = 1;
         for (Node n : boxInstructions.getChildren()) {

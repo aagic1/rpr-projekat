@@ -186,7 +186,7 @@
                                  <children>
                                     <TextField maxWidth="70.0" promptText="Amount" />
                                     <TextField prefWidth="95.0" promptText="Meas. unit" />
-                                    <TextField prefWidth="400.0" promptText="Ingredient" />
+                                    <TextField prefWidth="400.0" promptText="Ingredient" fx:id="fldIngredient" />
                                     <Button mnemonicParsing="false" text="Delete ingredient" visible="false" />
                                  </children>
                               </HBox>
@@ -215,7 +215,7 @@
                                           <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextArea prefHeight="80.0" promptText="Instructions..." wrapText="true" />
+                                    <TextArea prefHeight="80.0" fx:id="textInstruction" promptText="Instructions..." wrapText="true" />
                                     <Button mnemonicParsing="false" text="Remove step" visible="false" />
                                  </children>
                                  <VBox.margin>

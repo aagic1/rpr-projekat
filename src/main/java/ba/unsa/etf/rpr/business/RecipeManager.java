@@ -2,7 +2,10 @@ package ba.unsa.etf.rpr.business;
 
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
+import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.exception.RecipeException;
+
+import java.util.List;
 
 public class RecipeManager {
 
@@ -18,8 +21,8 @@ public class RecipeManager {
         }
     }
 
-    public void validatePreparationTime(int minutes, int hours) throws RecipeException {
-        if (minutes == 0 && hours == 0) {
+    public void validatePreparationTime(int time) throws RecipeException {
+        if (time == 0) {
             throw new RecipeException("Preparation time can not be 0");
         }
     }
@@ -36,9 +39,32 @@ public class RecipeManager {
         }
     }
 
+    public void validateIngredients(List<Ingredient> ingredientList) throws RecipeException {
+        for (Ingredient ingredient : ingredientList) {
+            validateIngredient(ingredient);
+        }
+    }
+
     public void validateInstruction(Instruction instruction) throws RecipeException {
         if (instruction.getDescription().isBlank()) {
             throw new RecipeException("Instruction description can not be empty");
+        }
+    }
+
+    public void validateInstructions(List<Instruction> instructionList) throws RecipeException {
+        for (Instruction instruction : instructionList) {
+            validateInstruction(instruction);
+        }
+    }
+
+    public void validateRecipe(Recipe recipe) throws RecipeException {
+        try {
+            validateTitle(recipe.getTitle());
+            validateDescription(recipe.getDescription());
+            validateServings(recipe.getServings());
+            validatePreparationTime(recipe.getPreparationTime());
+        } catch (RecipeException e) {
+            throw new RecipeException("Invalid recipe");
         }
     }
 }

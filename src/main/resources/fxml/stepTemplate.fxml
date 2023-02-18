@@ -5,14 +5,18 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+<?import java.net.URL?>
 <HBox spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@/css/recipeForm.css" />
+   </stylesheets>
    <children>
       <Label text="1.">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextArea prefHeight="80.0" promptText="Instructions..." wrapText="true" />
+      <TextArea fx:id="textDescription" prefHeight="80.0" promptText="Instructions..." wrapText="true" />
       <Button mnemonicParsing="false" onAction="#deleteStep" text="Remove step" />
    </children>
 </HBox>

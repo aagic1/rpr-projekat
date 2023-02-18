@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
-      <TextField maxWidth="70.0" promptText="Amount" />
-      <TextField prefWidth="95.0" promptText="Meas. unit" />
-      <TextField prefWidth="400.0" promptText="Ingredient" />
+      <TextField maxWidth="70.0" promptText="Amount" fx:id="fldAmount"/>
+      <TextField prefWidth="95.0" promptText="Meas. unit" fx:id="fldMeasurementUnit"/>
+      <TextField prefWidth="400.0" promptText="Ingredient" fx:id="fldIngredient" />
       <Button mnemonicParsing="false" onAction="#deleteIngredient" text="Delete ingredient" />
    </children>
 </HBox>
