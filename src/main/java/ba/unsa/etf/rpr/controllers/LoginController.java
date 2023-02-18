@@ -1,5 +1,6 @@
 package ba.unsa.etf.rpr.controllers;
 
+import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.dao.DaoFactory;
 import ba.unsa.etf.rpr.domain.User;
 import ba.unsa.etf.rpr.exception.RecipeException;
@@ -15,6 +16,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 
 public class LoginController {
+    UserManager userManager = new UserManager();
 
     public TextField fldEmail;
     public PasswordField fldPassword;
@@ -23,9 +25,11 @@ public class LoginController {
     public Button btnLogin;
     public Button btnSignup;
 
+    //TODO
+    // Dodati binding na email i password zbog lakšeg rada (da se ne mora uvijek korisiti fldEmail.getText(), fldPassword.getText()...
 
     public void actionLogin(ActionEvent actionEvent) {
-        if (validateCredentials(fldEmail, fldPassword)) {
+        if (validateCredentials(fldEmail.getText(), fldPassword.getText())) {
             Stage thisStage = ((Stage) btnLogin.getScene().getWindow());
             try {
                 User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
@@ -33,7 +37,7 @@ public class LoginController {
                 thisStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
                 HomeController homeController = loader.getController();
                 homeController.initUser(user);
-                thisStage.setTitle("E-kuharica");
+                thisStage.setTitle("E-CookBook");
                 thisStage.setResizable(true);
                 thisStage.show();
                 thisStage.setMinWidth(thisStage.getWidth());
@@ -60,54 +64,32 @@ public class LoginController {
         }
     }
 
-    private boolean validateCredentials(TextField fldEmail, TextField fldPassword) {
-        Pair<Boolean, String> responseEmail = validateEmail(fldEmail);
-        boolean validEmail = responseEmail.getKey();
-        String messageEmail = responseEmail.getValue();
-        lblValidationEmail.setText(messageEmail);
-        if (!validEmail) {
-            return false;
-        }
+    private boolean validateCredentials(String email, String password) {
+        lblValidationPassword.setText("");
+        lblValidationEmail.setText("");
 
-        Pair<Boolean, String> responsePassword = validatePassword(fldEmail, fldPassword);
-        boolean validPassword = responsePassword.getKey();
-        String messagePassword = responsePassword.getValue();
-        lblValidationPassword.setText(messagePassword);
-        if (!validPassword) {
-            return false;
-        }
-        return true;
-    }
-
-    private Pair<Boolean, String> validateEmail(TextField fldEmail) {
-        String email = fldEmail.getText();
         if (email.isBlank()) {
-            return new Pair<>(false, "Enter an email");
-        }
-        try {
-            User user = DaoFactory.userDao().getByEmail(email);
-            return new Pair<>(true, "");
-        } catch (RecipeException e) {
-            return new Pair<>(false, "Email is not connected to an account.");
-        }
-    }
-
-    private Pair<Boolean, String> validatePassword(TextField fldEmail, TextField fldPassword) {
-        String password = fldPassword.getText();
-        if (password.isBlank()) {
-            return new Pair<>(false, "Enter password");
-        }
-        String email = fldEmail.getText();
-        try {
-            User user = DaoFactory.userDao().getByEmail(email);
-            if (user.getPassword().equals(password)) {
-                return new Pair<>(true, "");
-            } else {
-                return new Pair<>(false, "Incorrect password");
+            lblValidationEmail.setText("Enter email");
+            if (password.isBlank()) {
+                lblValidationPassword.setText("Enter password");
             }
-        } catch (RecipeException e) {
-            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
-            return new Pair<>(false, "");
+            return false;
         }
+
+        try {
+            userManager.validateLoginEmail(email);
+        } catch (RecipeException e) {
+            lblValidationEmail.setText(e.getMessage());
+            return false;
+        }
+
+        try {
+            userManager.validateLoginPassword(email, password);
+        } catch (RecipeException e) {
+            lblValidationPassword.setText(e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 }
