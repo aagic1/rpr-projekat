@@ -66,8 +66,11 @@ public class LoginController {
     private boolean validateCredentials(String email, String password) {
         lblValidationPassword.setText("");
         lblValidationEmail.setText("");
+        fldEmail.getStyleClass().removeAll("invalidField");
+        fldPassword.getStyleClass().removeAll("invalidField");
 
         if (email.isBlank()) {
+            fldEmail.getStyleClass().add("invalidField");
             lblValidationEmail.setText("Enter email");
             return false;
         }
@@ -76,16 +79,19 @@ public class LoginController {
             userManager.validateLoginEmail(email);
             if (password.isBlank()) {
                 lblValidationPassword.setText("Enter password");
+                fldPassword.getStyleClass().add("invalidField");
                 return false;
             }
         } catch (RecipeException e) {
             lblValidationEmail.setText(e.getMessage());
+            fldEmail.getStyleClass().add("invalidField");
             return false;
         }
 
         try {
             userManager.validateLoginPassword(email, password);
         } catch (RecipeException e) {
+            fldPassword.getStyleClass().add("invalidField");
             lblValidationPassword.setText(e.getMessage());
             return false;
         }

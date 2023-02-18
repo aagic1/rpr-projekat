@@ -27,8 +27,10 @@ public class SignUpController {
                 try {
                     userManager.validateSignupEmail(fldEmail.getText());
                     lblValidationEmail.setText("");
+                    fldEmail.getStyleClass().removeAll("invalidField");
                 } catch (RecipeException e) {
                     lblValidationEmail.setText(e.getMessage());
+                    fldEmail.getStyleClass().add("invalidField");
                 }
             }
         });
@@ -37,8 +39,10 @@ public class SignUpController {
                 try {
                     userManager.validateSignupUsername(fldUsername.getText());
                     lblValidationUsername.setText("");
+                    fldUsername.getStyleClass().removeAll("invalidField");
                 } catch (RecipeException e) {
                     lblValidationUsername.setText(e.getMessage());
+                    fldUsername.getStyleClass().add("invalidField");
                 }
             }
         });
@@ -47,8 +51,10 @@ public class SignUpController {
                 try {
                     userManager.validateSignupPassword(fldPassword.getText());
                     lblValidationPassword.setText("");
+                    fldPassword.getStyleClass().removeAll("invalidField");
                 } catch (RecipeException e) {
                     lblValidationPassword.setText(e.getMessage());
+                    fldPassword.getStyleClass().add("invalidField");
                 }
             }
         });

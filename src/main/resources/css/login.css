@@ -2,19 +2,6 @@
     -fx-text-fill: red;
 }
 
-/*#lblValidationPassword.valid,*/
-/*#lblValidationUsername.valid,*/
-/*#lblValidationEmail.valid {*/
-/*    -fx-min-height: 0;*/
-/*    -fx-max-height: 0;*/
-/*}*/
-
-/*#lblValidationPassword.invalid,*/
-/*#lblValidationUsername.invalid,*/
-/*#lblValidationEmail.invalid {*/
-/*    -fx-max-height: 20px;*/
-/*}*/
-
 #gridLogin #btnSignup {
     -fx-text-fill: blue;
     -fx-font-weight: bold;
@@ -25,5 +12,17 @@
 #gridLogin #btnSignup:focused,
 #gridLogin #btnSignup:hover {
     -fx-background-color: lightgray;
+}
+
+.invalidField {
+    -fx-border-color: #ff6383;
+    -fx-border-width: 2px;
+}
+
+TextField,
+PasswordField {
+    -fx-border-width: 2px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2px;
 }
 
