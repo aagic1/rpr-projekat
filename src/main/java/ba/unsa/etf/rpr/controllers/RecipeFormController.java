@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr.controllers;
 
 import ba.unsa.etf.rpr.domain.Ingredient;
+import ba.unsa.etf.rpr.domain.Instruction;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -96,4 +97,60 @@ public class RecipeFormController {
     public void actionCancel(ActionEvent actionEvent) {
         ((Stage) boxInstructions.getScene().getWindow()).close();
     }
+
+
+    public void actionSave(ActionEvent actionEvent) {
+        String title = textTitle.getText();
+        String description = textDescription.getText();
+        String notes = textNotes.getText();
+        int prepTime = getPrepTime();
+        int cookTime = getCookTime();
+        int servings = Integer.parseInt(spinnerServings.getEditor().getText());
+        List<Ingredient> ingredients = getIngredients();
+        List<Instruction> instructions = getInstructions();
+    }
+
+    private int getCookTime() {
+        int minutes = Integer.parseInt(spinnerCookMinutes.getEditor().getText());
+        int hours = Integer.parseInt(spinnerCookHours.getEditor().getText());
+        return hours*60 + minutes;
+    }
+
+    private int getPrepTime() {
+        int minutes = Integer.parseInt(spinnerPrepMinutes.getEditor().getText());
+        int hours = Integer.parseInt(spinnerPrepHours.getEditor().getText());
+        return hours*60 + minutes;
+    }
+
+    private List<Ingredient> getIngredients() {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (Node n : boxIngredients.getChildren()) {
+            HBox hbox = (HBox) n;
+            int amount;
+            try {
+                amount = Integer.parseInt(((TextField) hbox.getChildren().get(0)).getText());
+            } catch (NumberFormatException e) {
+                amount = 0;
+            }
+            String measurementUnit = ((TextField) hbox.getChildren().get(1)).getText();
+            String name = ((TextField) hbox.getChildren().get(2)).getText();
+            ingredients.add(new Ingredient(0, name, amount, measurementUnit, null));
+        }
+        return ingredients;
+    }
+
+    private List<Instruction> getInstructions() {
+        List<Instruction> instructions = new ArrayList<>();
+        int counter = 1;
+        for (Node n : boxInstructions.getChildren()) {
+            HBox hbox = (HBox) n;
+            int step = counter;
+            String description = ((TextArea) hbox.getChildren().get(1)).getText();
+            instructions.add(new Instruction(0, null, step, description));
+            counter++;
+        }
+        System.out.println(instructions);
+        return instructions;
+    }
+
 }
