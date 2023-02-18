@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr.controllers;
 
 import ba.unsa.etf.rpr.business.RecipeManager;
+import ba.unsa.etf.rpr.dao.DaoFactory;
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
@@ -37,101 +38,6 @@ public class RecipeFormController {
     public void initialize() {
         initSpinners();
         initListeners();
-    }
-
-    private void initListeners() {
-        textTitle.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                try {
-                    recipeManager.validateTitle(textTitle.getText());
-                    textTitle.getStyleClass().removeAll("invalidField");
-                } catch (RecipeException e) {
-                    textTitle.getStyleClass().add("invalidField");
-                }
-            }
-        });
-        textDescription.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                try {
-                    recipeManager.validateDescription(textDescription.getText());
-                    textDescription.getStyleClass().removeAll("invalidField");
-                } catch (RecipeException e) {
-                    textDescription.getStyleClass().add("invalidField");
-                }
-            }
-        });
-        spinnerPrepMinutes.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                try {
-                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
-                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
-                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
-                } catch (RecipeException e) {
-                    spinnerPrepMinutes.getStyleClass().add("invalidField");
-                    spinnerPrepHours.getStyleClass().add("invalidField");
-                }
-            }
-        });
-        spinnerPrepHours.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                try {
-                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
-                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
-                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
-                } catch (RecipeException e) {
-                    spinnerPrepMinutes.getStyleClass().add("invalidField");
-                    spinnerPrepHours.getStyleClass().add("invalidField");
-                }
-            }
-        });
-        spinnerServings.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                try {
-                    recipeManager.validateServings(Integer.parseInt(spinnerServings.getEditor().getText()));
-                    spinnerServings.getStyleClass().removeAll("invalidField");
-                } catch (RecipeException e) {
-                    spinnerServings.getStyleClass().add("invalidField");
-                }
-            }
-        });
-        fldIngredient.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                if (fldIngredient.getText().isBlank()) {
-                    fldIngredient.getStyleClass().add("invalidField");
-                } else {
-                    fldIngredient.getStyleClass().removeAll("invalidField");
-                }
-            }
-        });
-        textInstruction.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (oldVal) {
-                if (textInstruction.getText().isBlank()) {
-                    textInstruction.getStyleClass().add("invalidField");
-                } else {
-                    textInstruction.getStyleClass().removeAll("invalidField");
-                }
-            }
-        });
-    }
-
-    private void initSpinners() {
-        initSpinnerMinutes(spinnerPrepMinutes);
-        initSpinnerMinutes(spinnerCookMinutes);
-        initSpinnerHours(spinnerPrepHours);
-        initSpinnerHours(spinnerCookHours);
-        initSpinnerServings(spinnerServings);
-    }
-
-    private void initSpinnerMinutes(Spinner spinner) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 55, 0, 5));
-    }
-
-    private void initSpinnerHours(Spinner spinner) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23));
-    }
-
-    private void initSpinnerServings(Spinner spinner) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999));
     }
 
     public void addIngredient(ActionEvent actionEvent) {
@@ -188,8 +94,37 @@ public class RecipeFormController {
         if (!validateForm()) {
             return;
         }
-        // todo
-        // save data to database
+        Recipe recipe = new Recipe();
+        recipe.setTitle(textTitle.getText());
+        recipe.setDescription(textDescription.getText());
+        recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
+        recipe.setPreparationTime(Integer.parseInt(spinnerPrepHours.getEditor().getText())*60 + Integer.parseInt(spinnerPrepMinutes.getEditor().getText()));
+        recipe.setCookTime(Integer.parseInt(spinnerCookHours.getEditor().getText())*60 + Integer.parseInt(spinnerCookMinutes.getEditor().getText()));
+        recipe.setNotes(textNotes.getText());
+        try {
+            // TODO
+            // owner should be logged in user
+            // should be implemented next
+            recipe.setOwner(DaoFactory.userDao().getByEmail("aagic1@etf.unsa.ba"));
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            recipe = recipeManager.addRecipe(recipe);
+            List<Ingredient> ingredients = getAllIngredients();
+            for (Ingredient ingredient : ingredients) {
+                ingredient.setRecipe(recipe);
+                recipeManager.addIngredient(ingredient);
+            }
+
+            List<Instruction> instructions = getAllInstructions();
+            for (Instruction instruction : instructions) {
+                instruction.setRecipe(recipe);
+                recipeManager.addInstruction(instruction);
+            }
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean validateForm() {
@@ -304,5 +239,100 @@ public class RecipeFormController {
         }
         System.out.println(instructions);
         return instructions;
+    }
+
+    private void initListeners() {
+        textTitle.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateTitle(textTitle.getText());
+                    textTitle.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    textTitle.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        textDescription.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateDescription(textDescription.getText());
+                    textDescription.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    textDescription.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerPrepMinutes.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
+                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
+                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerPrepMinutes.getStyleClass().add("invalidField");
+                    spinnerPrepHours.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerPrepHours.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validatePreparationTime(Integer.parseInt(spinnerPrepMinutes.getEditor().getText()) + 60*Integer.parseInt(spinnerPrepHours.getEditor().getText()));
+                    spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
+                    spinnerPrepHours.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerPrepMinutes.getStyleClass().add("invalidField");
+                    spinnerPrepHours.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        spinnerServings.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                try {
+                    recipeManager.validateServings(Integer.parseInt(spinnerServings.getEditor().getText()));
+                    spinnerServings.getStyleClass().removeAll("invalidField");
+                } catch (RecipeException e) {
+                    spinnerServings.getStyleClass().add("invalidField");
+                }
+            }
+        });
+        fldIngredient.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                if (fldIngredient.getText().isBlank()) {
+                    fldIngredient.getStyleClass().add("invalidField");
+                } else {
+                    fldIngredient.getStyleClass().removeAll("invalidField");
+                }
+            }
+        });
+        textInstruction.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal) {
+                if (textInstruction.getText().isBlank()) {
+                    textInstruction.getStyleClass().add("invalidField");
+                } else {
+                    textInstruction.getStyleClass().removeAll("invalidField");
+                }
+            }
+        });
+    }
+
+    private void initSpinners() {
+        initSpinnerMinutes(spinnerPrepMinutes);
+        initSpinnerMinutes(spinnerCookMinutes);
+        initSpinnerHours(spinnerPrepHours);
+        initSpinnerHours(spinnerCookHours);
+        initSpinnerServings(spinnerServings);
+    }
+
+    private void initSpinnerMinutes(Spinner spinner) {
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 55, 0, 5));
+    }
+
+    private void initSpinnerHours(Spinner spinner) {
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23));
+    }
+
+    private void initSpinnerServings(Spinner spinner) {
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999));
     }
 }
