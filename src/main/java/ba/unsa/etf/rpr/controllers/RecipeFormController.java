@@ -122,6 +122,7 @@ public class RecipeFormController {
                 instruction.setRecipe(recipe);
                 recipeManager.addInstruction(instruction);
             }
+            ((Stage) boxInstructions.getScene().getWindow()).close();
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
