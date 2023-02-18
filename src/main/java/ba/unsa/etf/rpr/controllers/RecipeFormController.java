@@ -126,15 +126,10 @@ public class RecipeFormController {
         List<Ingredient> ingredients = new ArrayList<>();
         for (Node n : boxIngredients.getChildren()) {
             HBox hbox = (HBox) n;
-            int amount;
-            try {
-                amount = Integer.parseInt(((TextField) hbox.getChildren().get(0)).getText());
-            } catch (NumberFormatException e) {
-                amount = 0;
-            }
+            String amount = ((TextField) hbox.getChildren().get(0)).getText();
             String measurementUnit = ((TextField) hbox.getChildren().get(1)).getText();
             String name = ((TextField) hbox.getChildren().get(2)).getText();
-            ingredients.add(new Ingredient(0, name, amount, measurementUnit, null));
+            ingredients.add(new Ingredient(0, null, name, amount, measurementUnit));
         }
         return ingredients;
     }

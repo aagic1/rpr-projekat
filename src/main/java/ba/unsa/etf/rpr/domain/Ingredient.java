@@ -7,20 +7,21 @@ import java.util.Objects;
  */
 public class Ingredient implements Idable{
     private int id;
-    private String name;
-    private int amount;
-    private String measurementUnit;
     private Recipe recipe;
+    private String name;
+    private String amount;
+    private String measurementUnit;
+
 
     public Ingredient() {
     }
 
-    public Ingredient(int id, String name, int amount, String measurementUnit, Recipe recipe) {
+    public Ingredient(int id, Recipe recipe, String name, String amount, String measurementUnit) {
         this.id = id;
+        this.recipe = recipe;
         this.name = name;
         this.amount = amount;
         this.measurementUnit = measurementUnit;
-        this.recipe = recipe;
     }
 
     public String getName() {
@@ -31,11 +32,11 @@ public class Ingredient implements Idable{
         this.name = name;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -70,12 +71,12 @@ public class Ingredient implements Idable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return id == that.id && amount == that.amount && Objects.equals(name, that.name) && Objects.equals(measurementUnit, that.measurementUnit) && Objects.equals(recipe, that.recipe);
+        return id == that.id && Objects.equals(recipe, that.recipe) && Objects.equals(name, that.name) && Objects.equals(amount, that.amount) && Objects.equals(measurementUnit, that.measurementUnit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, amount, measurementUnit, recipe);
+        return Objects.hash(id, recipe, name, amount, measurementUnit);
     }
 
     @Override
