@@ -9,7 +9,7 @@
    <children>
       <Label text="1.">
          <font>
-            <Font size="24.0" />
+            <Font size="16.0" />
          </font>
       </Label>
       <TextArea prefHeight="80.0" promptText="Instructions..." wrapText="true" />
