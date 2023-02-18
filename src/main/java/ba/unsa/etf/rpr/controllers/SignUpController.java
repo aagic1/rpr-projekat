@@ -14,7 +14,6 @@ public class SignUpController {
     public TextField fldEmail;
     public TextField fldUsername;
     public PasswordField fldPassword;
-    public PasswordField fldPasswordRepeat;
     public Button btnSignup;
     public Label lblValidationEmail;
     public Label lblValidationUsername;
@@ -68,11 +67,15 @@ public class SignUpController {
                 new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
             }
         } catch (RecipeException e) {
-            fldEmail.requestFocus();
-            fldUsername.requestFocus();
-            fldPassword.requestFocus();
-            btnSignup.requestFocus();
+            showValidationMessages();
         }
+    }
+
+    private void showValidationMessages() {
+        fldEmail.requestFocus();
+        fldUsername.requestFocus();
+        fldPassword.requestFocus();
+        btnSignup.requestFocus();
     }
 
     private void closeWindow() {
