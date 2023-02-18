@@ -41,7 +41,6 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
             recipe.setOwner(DaoFactory.userDao().getById(rs.getInt("owner_id")));
             recipe.setTitle(rs.getString("title"));
             recipe.setDescription(rs.getString("description"));
-            recipe.setDate(rs.getDate("date").toLocalDate());
             recipe.setPreparationTime(rs.getInt("preparation_time"));
             recipe.setCookTime(rs.getInt("cook_time"));
             recipe.setServings(rs.getInt("servings"));
@@ -59,7 +58,6 @@ public class RecipeDaoSQLImpl extends AbstractDao<Recipe> implements RecipeDao {
         row.put("owner_id", object.getOwner().getId());
         row.put("title", object.getTitle());
         row.put("description", object.getDescription());
-        row.put("date", Date.valueOf(object.getDate()));
         row.put("preparation_time", object.getPreparationTime());
         row.put("cook_time", object.getCookTime());
         row.put("servings", object.getServings());
