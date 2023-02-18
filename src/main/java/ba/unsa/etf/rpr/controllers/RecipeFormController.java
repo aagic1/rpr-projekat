@@ -2,13 +2,13 @@ package ba.unsa.etf.rpr.controllers;
 
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
+import ba.unsa.etf.rpr.domain.Recipe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -100,14 +100,86 @@ public class RecipeFormController {
 
 
     public void actionSave(ActionEvent actionEvent) {
-        String title = textTitle.getText();
-        String description = textDescription.getText();
-        String notes = textNotes.getText();
-        int prepTime = getPrepTime();
-        int cookTime = getCookTime();
-        int servings = Integer.parseInt(spinnerServings.getEditor().getText());
+        if (!validateForm()) {
+            return;
+        }
+        // todo
+        // save data to database
+    }
+
+    private boolean validateForm() {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(textTitle.getText());
+        recipe.setDescription(textDescription.getText());
+        recipe.setNotes(textNotes.getText());
+        recipe.setPreparationTime(getPrepTime());
+        recipe.setCookTime(getCookTime());
+        recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
         List<Ingredient> ingredients = getIngredients();
         List<Instruction> instructions = getInstructions();
+
+        boolean validForm = true;
+        if (!isValidRecipe(recipe)) {
+            showInvalidRecipeFields();
+            validForm = false;
+        }
+        if (!areValidIngredients(ingredients)) {
+            showInvalidIngredientFields();
+            validForm = false;
+        }
+        if (!areValidInstructions(instructions)) {
+            showInvalidInstructionFields();
+            validForm = false;
+        }
+        return validForm;
+    }
+
+    private void showInvalidInstructionFields() {
+    }
+
+    private void showInvalidIngredientFields() {
+    }
+
+    private void showInvalidRecipeFields() {
+    }
+
+    private boolean isValidRecipe(Recipe recipe) {
+        return isValidTitle(recipe.getTitle()) && isValidDescription(recipe.getDescription())
+                && isValidServings(recipe.getServings()) && isValidPreparationTime(recipe.getPreparationTime());
+    }
+
+    private boolean isValidTitle(String title) {
+        return !title.isBlank();
+    }
+
+    private boolean isValidDescription(String description) {
+        return !description.isBlank();
+    }
+
+    private boolean isValidServings(int servings) {
+        return servings > 0;
+    }
+
+    private boolean isValidPreparationTime(int prepTime) {
+        return prepTime > 0;
+    }
+
+    private boolean areValidIngredients(List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getName().isBlank()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean areValidInstructions(List<Instruction> instructions) {
+        for (Instruction instruction : instructions) {
+            if (instruction.getDescription().isBlank()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private int getCookTime() {
@@ -147,39 +219,4 @@ public class RecipeFormController {
         System.out.println(instructions);
         return instructions;
     }
-
-    private boolean validateTitle(String title) {
-        return !title.isBlank();
-    }
-
-    private boolean validateDescription(String description) {
-        return !description.isBlank();
-    }
-
-    private boolean validateServings(int servings) {
-        return servings > 0;
-    }
-
-    private boolean validatePrepTime(int prepTime) {
-        return prepTime > 0;
-    }
-
-    private boolean validateIngredients(List<Ingredient> ingredients) {
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getName().isBlank()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean validateInstructions(List<Instruction> instructions) {
-        for (Instruction instruction : instructions) {
-            if (instruction.getDescription().isBlank()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }
