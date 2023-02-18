@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,29 +119,65 @@ public class RecipeFormController {
         List<Ingredient> ingredients = getIngredients();
         List<Instruction> instructions = getInstructions();
 
-        boolean validForm = true;
-        if (!isValidRecipe(recipe)) {
+        if (!isValidRecipe(recipe) || !areValidIngredients(ingredients) || !areValidInstructions(instructions)) {
             showInvalidRecipeFields();
-            validForm = false;
-        }
-        if (!areValidIngredients(ingredients)) {
             showInvalidIngredientFields();
-            validForm = false;
-        }
-        if (!areValidInstructions(instructions)) {
             showInvalidInstructionFields();
-            validForm = false;
+            return false;
         }
-        return validForm;
+        return true;
     }
 
     private void showInvalidInstructionFields() {
+        for (Node node : boxInstructions.getChildren()) {
+            HBox row = (HBox) node;
+            TextArea textDescription = (TextArea) row.getChildren().get(1);
+            if (textDescription.getText().isBlank()) {
+                textDescription.getStyleClass().add("invalidField");
+            } else {
+                textDescription.getStyleClass().removeAll("invalidField");
+            }
+        }
     }
 
     private void showInvalidIngredientFields() {
+        for (Node node : boxIngredients.getChildren()) {
+            HBox row = (HBox) node;
+            TextField fldName = (TextField) row.getChildren().get(2);
+            if (fldName.getText().isBlank()) {
+                fldName.getStyleClass().add("invalidField");
+            } else {
+                fldName.getStyleClass().removeAll("invalidField");
+            }
+        }
     }
 
     private void showInvalidRecipeFields() {
+        if (textTitle.getText().isBlank()) {
+            textTitle.getStyleClass().add("invalidField");
+        } else {
+            textTitle.getStyleClass().removeAll("invalidField");
+        }
+
+        if (textDescription.getText().isBlank()) {
+            textDescription.getStyleClass().add("invalidField");
+        } else {
+            textDescription.getStyleClass().removeAll("invalidField");
+        }
+
+        if ((Integer) spinnerServings.getValue() == 0) {
+            spinnerServings.getStyleClass().add("invalidField");
+        } else {
+            spinnerServings.getStyleClass().removeAll("invalidField");
+        }
+
+        if ((Integer) spinnerPrepHours.getValue() == 0 && (Integer) spinnerPrepMinutes.getValue() == 0) {
+            spinnerPrepMinutes.getStyleClass().add("invalidField");
+            spinnerPrepHours.getStyleClass().add("invalidField");
+        } else {
+            spinnerPrepMinutes.getStyleClass().removeAll("invalidField");
+            spinnerPrepHours.getStyleClass().removeAll("invalidField");
+        }
     }
 
     private boolean isValidRecipe(Recipe recipe) {

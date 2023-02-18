@@ -1,0 +1,16 @@
+.invalidField {
+    -fx-border-color: #ff6383;
+    -fx-border-width: 2px;
+}
+
+TextField,
+Spinner,
+TextArea {
+    -fx-border-width: 2px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2px;
+}
+
+.button-with-margin {
+
+}
