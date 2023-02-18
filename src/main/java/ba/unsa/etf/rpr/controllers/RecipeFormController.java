@@ -153,4 +153,38 @@ public class RecipeFormController {
         return instructions;
     }
 
+    private boolean validateTitle(String title) {
+        return !title.isBlank();
+    }
+
+    private boolean validateDescription(String description) {
+        return !description.isBlank();
+    }
+
+    private boolean validateServings(int servings) {
+        return servings > 0;
+    }
+
+    private boolean validatePrepTime(int prepTime) {
+        return prepTime > 0;
+    }
+
+    private boolean validateIngredients(List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getName().isBlank()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateInstructions(List<Instruction> instructions) {
+        for (Instruction instruction : instructions) {
+            if (instruction.getDescription().isBlank()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
