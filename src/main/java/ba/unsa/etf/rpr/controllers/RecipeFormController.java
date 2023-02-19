@@ -1,5 +1,6 @@
 package ba.unsa.etf.rpr.controllers;
 
+import ba.unsa.etf.rpr.business.IngredientManager;
 import ba.unsa.etf.rpr.business.RecipeManager;
 import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.domain.Ingredient;
@@ -25,6 +26,7 @@ public class RecipeFormController {
     private User owner;
     private RecipeManager recipeManager = new RecipeManager();
     private UserManager userManager = new UserManager();
+    private IngredientManager ingredientManager = new IngredientManager();
 
     public TextField fldIngredient;
     public TextArea textInstruction;
@@ -48,6 +50,20 @@ public class RecipeFormController {
     public void initialize() {
         initSpinners();
         initListeners();
+        if (recipeToUpdate != null) {
+            populateForm(recipeToUpdate);
+        }
+    }
+
+    private void populateForm(Recipe recipe) {
+        textTitle.setText(recipe.getTitle());
+        textDescription.setText(recipe.getDescription());
+        spinnerServings.getEditor().setText("" + recipe.getServings());
+        spinnerCookHours.getEditor().setText("" + (recipe.getCookTime() / 60));
+        spinnerCookMinutes.getEditor().setText("" + (recipe.getCookTime() % 60));
+        spinnerPrepHours.getEditor().setText("" + (recipe.getPreparationTime() / 60));
+        spinnerPrepMinutes.getEditor().setText("" + (recipe.getPreparationTime() % 60));
+        textNotes.setText(recipe.getNotes());
     }
 
     public void addIngredient(ActionEvent actionEvent) {
@@ -110,7 +126,7 @@ public class RecipeFormController {
         try {
             if (recipeToUpdate != null) {
                 recipe = recipeManager.updateRecipe(recipe);
-                recipeManager.removeIngredientsByRecipe(recipe);
+                ingredientManager.removeIngredientsByRecipe(recipe);
                 recipeManager.removeInstructionsByRecipe(recipe);
             } else {
                 recipe = recipeManager.addRecipe(recipe);
@@ -119,7 +135,7 @@ public class RecipeFormController {
             List<Ingredient> ingredients = getAllIngredients();
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);
-                recipeManager.addIngredient(ingredient);
+                ingredientManager.addIngredient(ingredient);
             }
             List<Instruction> instructions = getAllInstructions();
             for (Instruction instruction : instructions) {
@@ -147,7 +163,7 @@ public class RecipeFormController {
             List<Ingredient> ingredients = getAllIngredients();
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);
-                recipeManager.addIngredient(ingredient);
+                ingredientManager.addIngredient(ingredient);
             }
 
             List<Instruction> instructions = getAllInstructions();
@@ -184,7 +200,7 @@ public class RecipeFormController {
 
         try {
             recipeManager.validateRecipe(recipe);
-            recipeManager.validateIngredients(ingredients);
+            ingredientManager.validateIngredients(ingredients);
             recipeManager.validateInstructions(instructions);
         } catch (RecipeException e){
             showInvalidRecipeFields();

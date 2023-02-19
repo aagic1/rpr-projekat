@@ -17,14 +17,6 @@ public class RecipeManager {
         return DaoFactory.recipeDao().update(recipe);
     }
 
-    public Ingredient addIngredient(Ingredient ingredient) throws RecipeException {
-        return DaoFactory.ingredientDao().add(ingredient);
-    }
-
-    public void removeIngredientsByRecipe(Recipe recipe) throws RecipeException {
-        DaoFactory.ingredientDao().deleteIngredientsByRecipe(recipe);
-    }
-
     public Instruction addInstruction(Instruction instruction) throws RecipeException {
         return DaoFactory.instructionDao().add(instruction);
     }
@@ -54,18 +46,6 @@ public class RecipeManager {
     public void validateServings(int servings) throws RecipeException {
         if (servings == 0) {
             throw new RecipeException("Number of servings can not be 0");
-        }
-    }
-
-    public void validateIngredient(Ingredient ingredient) throws RecipeException {
-        if (ingredient.getName().isBlank()) {
-            throw new RecipeException("Ingredient name can not be empty");
-        }
-    }
-
-    public void validateIngredients(List<Ingredient> ingredientList) throws RecipeException {
-        for (Ingredient ingredient : ingredientList) {
-            validateIngredient(ingredient);
         }
     }
 
