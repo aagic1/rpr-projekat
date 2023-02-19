@@ -40,8 +40,8 @@ public class LoginController {
                 homeStage.setTitle("E-CookBook");
                 homeStage.setResizable(true);
                 homeStage.show();
-                homeStage.setMinWidth(thisStage.getWidth());
-                homeStage.setMinHeight(thisStage.getHeight());
+                homeStage.setMinWidth(homeStage.getWidth());
+                homeStage.setMinHeight(homeStage.getHeight());
                 thisStage.close();
             } catch (IOException | RecipeException e) {
                 new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
