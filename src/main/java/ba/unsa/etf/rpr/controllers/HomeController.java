@@ -57,6 +57,11 @@ public class HomeController {
             stage.show();
             stage.setMinWidth(stage.getWidth());
             stage.setMinHeight(stage.getHeight());
+            stage.setOnHidden(event -> {
+                if (recipe != null) {
+                    openMyRecipes(null);
+                }
+            });
         } catch (IOException e) {
             new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
         }
