@@ -32,15 +32,17 @@ public class LoginController {
             Stage thisStage = ((Stage) btnLogin.getScene().getWindow());
             try {
                 User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
+                Stage homeStage = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
-                thisStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
-                HomeController homeController = loader.getController();
-                homeController.initUser(user);
-                thisStage.setTitle("E-CookBook");
-                thisStage.setResizable(true);
-                thisStage.show();
-                thisStage.setMinWidth(thisStage.getWidth());
-                thisStage.setMinHeight(thisStage.getHeight());
+                homeStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+//                HomeController homeController = loader.getController();
+//                homeController.initUser(user);
+                homeStage.setTitle("E-CookBook");
+                homeStage.setResizable(true);
+                homeStage.show();
+                homeStage.setMinWidth(thisStage.getWidth());
+                homeStage.setMinHeight(thisStage.getHeight());
+                thisStage.close();
             } catch (IOException | RecipeException e) {
                 new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
             }
