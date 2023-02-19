@@ -3,11 +3,16 @@ package ba.unsa.etf.rpr.business;
 import ba.unsa.etf.rpr.dao.DaoFactory;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.domain.User;
 import ba.unsa.etf.rpr.exception.RecipeException;
 
 import java.util.List;
 
 public class RecipeManager {
+
+    public List<Recipe> getRecipesByUser(User user) throws RecipeException {
+        return DaoFactory.recipeDao().searchByOwner(user);
+    }
     public Recipe add(Recipe recipe) throws RecipeException {
         return DaoFactory.recipeDao().add(recipe);
     }
