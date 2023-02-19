@@ -70,8 +70,13 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
     }
 
     @Override
-    public void deleteIngredientsFromRecipe(Recipe recipe) throws RecipeException {
+    public void deleteIngredientsByRecipe(Recipe recipe) throws RecipeException {
         String sql = "DELETE FROM ingredient WHERE recipe_id=?";
-        executeQuery(sql, new Object[]{recipe.getId()});
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RecipeException(e.getMessage(), e);
+        }
     }
 }

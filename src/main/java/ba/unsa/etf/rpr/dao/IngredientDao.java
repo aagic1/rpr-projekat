@@ -13,5 +13,5 @@ public interface IngredientDao extends Dao<Ingredient> {
 
     List<Ingredient> getIngredientsByRecipe(Recipe recipe) throws RecipeException;
 
-    void deleteIngredientsFromRecipe(Recipe recipe) throws RecipeException;
+    void deleteIngredientsByRecipe(Recipe recipe) throws RecipeException;
 }
