@@ -74,6 +74,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
         String sql = "DELETE FROM ingredient WHERE recipe_id=?";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, recipe.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RecipeException(e.getMessage(), e);

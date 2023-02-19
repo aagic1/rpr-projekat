@@ -72,6 +72,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
         String sql = "DELETE FROM instructions WHERE recipe_id=?";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, recipe.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RecipeException(e.getMessage(), e);
