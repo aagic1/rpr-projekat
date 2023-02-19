@@ -17,8 +17,16 @@ public class RecipeManager {
         return DaoFactory.ingredientDao().add(ingredient);
     }
 
+    public void removeIngredientsByRecipe(Recipe recipe) throws RecipeException {
+        DaoFactory.ingredientDao().deleteIngredientsByRecipe(recipe);
+    }
+
     public Instruction addInstruction(Instruction instruction) throws RecipeException {
         return DaoFactory.instructionDao().add(instruction);
+    }
+
+    public void removeInstructionsByRecipe(Recipe recipe) throws RecipeException {
+        DaoFactory.instructionDao().deleteInstructionsByRecipe(recipe);
     }
 
     public void validateTitle(String title) throws RecipeException {
