@@ -32,11 +32,11 @@ public class RecipeFormController {
     public TextArea textInstruction;
     public VBox boxIngredients;
     public VBox boxInstructions;
-    public Spinner spinnerPrepHours;
-    public Spinner spinnerCookHours;
-    public Spinner spinnerPrepMinutes;
-    public Spinner spinnerCookMinutes;
-    public Spinner spinnerServings;
+    public Spinner<Integer> spinnerPrepHours;
+    public Spinner<Integer> spinnerCookHours;
+    public Spinner<Integer> spinnerPrepMinutes;
+    public Spinner<Integer> spinnerCookMinutes;
+    public Spinner<Integer> spinnerServings;
     public TextArea textTitle;
     public TextArea textDescription;
     public TextArea textNotes;
@@ -98,11 +98,11 @@ public class RecipeFormController {
     private void populateRecipe(Recipe recipe) {
         textTitle.setText(recipe.getTitle());
         textDescription.setText(recipe.getDescription());
-        spinnerServings.getEditor().setText("" + recipe.getServings());
-        spinnerCookHours.getEditor().setText("" + (recipe.getCookTime() / 60));
-        spinnerCookMinutes.getEditor().setText("" + (recipe.getCookTime() % 60));
-        spinnerPrepHours.getEditor().setText("" + (recipe.getPreparationTime() / 60));
-        spinnerPrepMinutes.getEditor().setText("" + (recipe.getPreparationTime() % 60));
+        spinnerServings.getValueFactory().setValue(recipe.getServings());
+        spinnerCookHours.getValueFactory().setValue(recipe.getCookTime() / 60);
+        spinnerCookMinutes.getValueFactory().setValue(recipe.getCookTime() % 60);
+        spinnerPrepHours.getValueFactory().setValue(recipe.getPreparationTime() / 60);
+        spinnerPrepMinutes.getValueFactory().setValue(recipe.getPreparationTime() % 60);
         textNotes.setText(recipe.getNotes());
     }
 
