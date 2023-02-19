@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
+<GridPane hgap="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@/css/recipeForm.css" />
    </stylesheets>
@@ -147,7 +147,7 @@
             </HBox>
          </children>
       </VBox>
-      <ScrollPane vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <ScrollPane prefHeight="640.0" prefWidth="760.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <content>
             <VBox spacing="10.0">
                <children>
@@ -186,7 +186,7 @@
                                  <children>
                                     <TextField maxWidth="70.0" promptText="Amount" />
                                     <TextField prefWidth="95.0" promptText="Meas. unit" />
-                                    <TextField prefWidth="400.0" promptText="Ingredient" fx:id="fldIngredient" />
+                                    <TextField fx:id="fldIngredient" prefWidth="400.0" promptText="Ingredient" />
                                     <Button mnemonicParsing="false" text="Delete ingredient" visible="false" />
                                  </children>
                               </HBox>
@@ -215,7 +215,7 @@
                                           <Font size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextArea prefHeight="80.0" fx:id="textInstruction" promptText="Instructions..." wrapText="true" />
+                                    <TextArea fx:id="textInstruction" prefHeight="80.0" promptText="Instructions..." wrapText="true" />
                                     <Button mnemonicParsing="false" text="Remove step" visible="false" />
                                  </children>
                                  <VBox.margin>
