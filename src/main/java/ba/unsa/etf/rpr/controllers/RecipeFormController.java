@@ -1,10 +1,11 @@
 package ba.unsa.etf.rpr.controllers;
 
 import ba.unsa.etf.rpr.business.RecipeManager;
-import ba.unsa.etf.rpr.dao.DaoFactory;
+import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
+import ba.unsa.etf.rpr.domain.User;
 import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,9 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFormController {
+    private Recipe recipeToUpdate;
+    private User owner;
+    private RecipeManager recipeManager = new RecipeManager();
+    private UserManager userManager = new UserManager();
+
     public TextField fldIngredient;
     public TextArea textInstruction;
-    private RecipeManager recipeManager = new RecipeManager();
     public VBox boxIngredients;
     public VBox boxInstructions;
     public Spinner spinnerPrepHours;
@@ -33,6 +38,11 @@ public class RecipeFormController {
     public TextArea textTitle;
     public TextArea textDescription;
     public TextArea textNotes;
+
+    public RecipeFormController(Recipe recipe, User user) {
+        this.recipeToUpdate = recipe;
+        this.owner = user;
+    }
 
     @FXML
     public void initialize() {
@@ -94,21 +104,44 @@ public class RecipeFormController {
         if (!validateForm()) {
             return;
         }
-        Recipe recipe = new Recipe();
-        recipe.setTitle(textTitle.getText());
-        recipe.setDescription(textDescription.getText());
-        recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
-        recipe.setPreparationTime(Integer.parseInt(spinnerPrepHours.getEditor().getText())*60 + Integer.parseInt(spinnerPrepMinutes.getEditor().getText()));
-        recipe.setCookTime(Integer.parseInt(spinnerCookHours.getEditor().getText())*60 + Integer.parseInt(spinnerCookMinutes.getEditor().getText()));
-        recipe.setNotes(textNotes.getText());
+
+        Recipe recipe = getRecipeData();
+        recipe.setOwner(owner);
         try {
-            // TODO
-            // owner should be logged in user
-            // should be implemented next
-            recipe.setOwner(DaoFactory.userDao().getByEmail("aagic1@etf.unsa.ba"));
+            if (recipeToUpdate != null) {
+                recipe = recipeManager.updateRecipe(recipe);
+                recipeManager.removeIngredientsByRecipe(recipe);
+                recipeManager.removeInstructionsByRecipe(recipe);
+            } else {
+                recipe = recipeManager.addRecipe(recipe);
+            }
+
+            List<Ingredient> ingredients = getAllIngredients();
+            for (Ingredient ingredient : ingredients) {
+                ingredient.setRecipe(recipe);
+                recipeManager.addIngredient(ingredient);
+            }
+            List<Instruction> instructions = getAllInstructions();
+            for (Instruction instruction : instructions) {
+                instruction.setRecipe(recipe);
+                recipeManager.addInstruction(instruction);
+            }
+            closeWindow();
+
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void updateRecipe() {
+        Recipe recipe = getRecipeData();
+
+    }
+
+    private void addRecipe() {
+        Recipe recipe = getRecipeData();
+        recipe.setOwner(owner);
+
         try {
             recipe = recipeManager.addRecipe(recipe);
             List<Ingredient> ingredients = getAllIngredients();
@@ -122,20 +155,30 @@ public class RecipeFormController {
                 instruction.setRecipe(recipe);
                 recipeManager.addInstruction(instruction);
             }
-            ((Stage) boxInstructions.getScene().getWindow()).close();
+            closeWindow();
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private boolean validateForm() {
+    private Recipe getRecipeData() {
         Recipe recipe = new Recipe();
         recipe.setTitle(textTitle.getText());
         recipe.setDescription(textDescription.getText());
-        recipe.setNotes(textNotes.getText());
+        recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
         recipe.setPreparationTime(getPrepTime());
         recipe.setCookTime(getCookTime());
-        recipe.setServings(Integer.parseInt(spinnerServings.getEditor().getText()));
+        recipe.setNotes(textNotes.getText());
+        return recipe;
+    }
+
+    private void closeWindow() {
+        ((Stage) boxInstructions.getScene().getWindow()).close();
+    }
+
+    private boolean validateForm() {
+        Recipe recipe = getRecipeData();
+
         List<Ingredient> ingredients = getAllIngredients();
         List<Instruction> instructions = getAllInstructions();
 
