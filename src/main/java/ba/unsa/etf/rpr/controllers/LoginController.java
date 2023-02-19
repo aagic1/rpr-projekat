@@ -35,8 +35,8 @@ public class LoginController {
                 Stage homeStage = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
                 homeStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
-//                HomeController homeController = loader.getController();
-//                homeController.initUser(user);
+                HomeController homeController = loader.getController();
+                homeController.initUser(user);
                 homeStage.setTitle("E-CookBook");
                 homeStage.setResizable(true);
                 homeStage.show();
