@@ -14,9 +14,8 @@ public class AppFX extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+        primaryStage.setResizable(false);
         primaryStage.show();
-//        primaryStage.setMinHeight(primaryStage.getHeight());
-//        primaryStage.setMinWidth(primaryStage.getWidth());
     }
 
     public static void main(String[] args) {
