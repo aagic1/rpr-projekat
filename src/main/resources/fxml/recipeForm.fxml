@@ -31,7 +31,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <VBox spacing="10.0">
+      <VBox spacing="10.0" GridPane.rowIndex="1">
          <children>
             <VBox>
                <children>
@@ -147,7 +147,7 @@
             </HBox>
          </children>
       </VBox>
-      <ScrollPane prefHeight="640.0" prefWidth="760.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <ScrollPane prefHeight="640.0" prefWidth="760.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <content>
             <VBox spacing="10.0">
                <children>
@@ -257,7 +257,7 @@
             <Insets />
          </opaqueInsets>
       </ScrollPane>
-      <ButtonBar GridPane.columnSpan="2" GridPane.rowIndex="2">
+      <ButtonBar GridPane.columnIndex="1" GridPane.rowIndex="2">
         <buttons>
           <Button cancelButton="true" mnemonicParsing="false" onAction="#actionCancel" text="Cancel" />
             <Button defaultButton="true" mnemonicParsing="false" onAction="#actionSave" text="Save" />
@@ -266,6 +266,14 @@
             <Insets top="40.0" />
          </GridPane.margin>
       </ButtonBar>
+      <Label fx:id="lblValidation" text="Please fill out required fields and then submit." textFill="RED" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="30.0" />
+         </GridPane.margin>
+      </Label>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

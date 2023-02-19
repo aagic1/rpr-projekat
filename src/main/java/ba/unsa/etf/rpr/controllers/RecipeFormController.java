@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFormController {
+    public Label lblValidation;
     private Recipe recipeToUpdate;
     private User owner;
     private RecipeManager recipeManager = new RecipeManager();
@@ -158,9 +159,11 @@ public class RecipeFormController {
 
     public void actionSave(ActionEvent actionEvent) {
         if (!validateForm()) {
+            lblValidation.setVisible(true);
             return;
         }
 
+        lblValidation.setVisible(false);
         Recipe recipe = getRecipeData();
         recipe.setOwner(owner);
         try {
