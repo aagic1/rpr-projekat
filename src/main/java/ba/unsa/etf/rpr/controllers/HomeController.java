@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class HomeController {
+    private boolean isShowingMyRecipes = false;
     private RecipeManager recipeManager = new RecipeManager();
     private static User loggedInUser = null;
     public TextField fldSearch;
@@ -58,7 +59,7 @@ public class HomeController {
             stage.setMinWidth(stage.getWidth());
             stage.setMinHeight(stage.getHeight());
             stage.setOnHidden(event -> {
-                if (recipe != null) {
+                if (isShowingMyRecipes) {
                     openMyRecipes(null);
                 }
             });
@@ -88,6 +89,7 @@ public class HomeController {
                 VBox box = loader.load();
                 paneContent.getChildren().add(box);
             }
+            isShowingMyRecipes = true;
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
