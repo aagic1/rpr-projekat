@@ -64,7 +64,6 @@ public class RecipeItemTemplateController {
 
     public void actionEdit(ActionEvent actionEvent) {
         homeController.openRecipeForm(recipe);
-        homeController.openMyRecipes(null);
     }
 
     public void actionDelete(ActionEvent actionEvent) {
