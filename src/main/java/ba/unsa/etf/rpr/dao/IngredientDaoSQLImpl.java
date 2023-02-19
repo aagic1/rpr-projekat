@@ -68,4 +68,10 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
         String sql = "SELECT * FROM ingredient WHERE recipe_id=?";
         return executeQuery(sql, new Object[]{recipe.getId()});
     }
+
+    @Override
+    public void deleteIngredientsFromRecipe(Recipe recipe) throws RecipeException {
+        String sql = "DELETE FROM ingredient WHERE recipe_id=?";
+        executeQuery(sql, new Object[]{recipe.getId()});
+    }
 }
