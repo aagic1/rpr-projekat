@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface InstructionDao extends Dao<Instruction> {
     List<Instruction> getInstructionsByRecipe(Recipe recipe) throws RecipeException;
+
+    void deleteInstructionsByRecipe(Recipe recipe) throws RecipeException;
 }
