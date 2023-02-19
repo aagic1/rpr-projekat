@@ -58,6 +58,7 @@ public class RecipeFormController {
     private void populateForm() {
         populateRecipe(recipeToUpdate);
         populateIngredients(recipeToUpdate);
+        populateInstructions(recipeToUpdate);
     }
 
     private void populateIngredients(Recipe recipe) {
@@ -87,7 +88,7 @@ public class RecipeFormController {
             List<Node> nodes = boxInstructions.getChildren();
             for (int i = 0; i < instructions.size(); i++) {
                 HBox currentRow = (HBox) nodes.get(i);
-                ((TextField)currentRow.getChildren().get(1)).setText(instructions.get(i).getDescription());
+                ((TextArea)currentRow.getChildren().get(1)).setText(instructions.get(i).getDescription());
             }
         } catch (RecipeException e) {
             throw new RuntimeException(e);
