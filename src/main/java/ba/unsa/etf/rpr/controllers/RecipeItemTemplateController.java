@@ -64,7 +64,7 @@ public class RecipeItemTemplateController {
 
     public void actionEdit(ActionEvent actionEvent) {
         homeController.openRecipeForm(recipe);
-
+        homeController.openMyRecipes(null);
     }
 
     public void actionDelete(ActionEvent actionEvent) {
@@ -75,6 +75,6 @@ public class RecipeItemTemplateController {
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
-
+        homeController.openMyRecipes(null);
     }
 }
