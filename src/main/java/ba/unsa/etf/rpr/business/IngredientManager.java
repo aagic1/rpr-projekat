@@ -8,7 +8,7 @@ import ba.unsa.etf.rpr.exception.RecipeException;
 import java.util.List;
 
 public class IngredientManager {
-    public Ingredient addIngredient(Ingredient ingredient) throws RecipeException {
+    public Ingredient add(Ingredient ingredient) throws RecipeException {
         return DaoFactory.ingredientDao().add(ingredient);
     }
 
