@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr.controllers;
 
 import ba.unsa.etf.rpr.business.IngredientManager;
+import ba.unsa.etf.rpr.business.InstructionManager;
 import ba.unsa.etf.rpr.business.RecipeManager;
 import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.domain.Ingredient;
@@ -27,6 +28,7 @@ public class RecipeFormController {
     private RecipeManager recipeManager = new RecipeManager();
     private UserManager userManager = new UserManager();
     private IngredientManager ingredientManager = new IngredientManager();
+    private InstructionManager instructionManager = new InstructionManager();
 
     public TextField fldIngredient;
     public TextArea textInstruction;
@@ -125,11 +127,11 @@ public class RecipeFormController {
         recipe.setOwner(owner);
         try {
             if (recipeToUpdate != null) {
-                recipe = recipeManager.updateRecipe(recipe);
+                recipe = recipeManager.update(recipe);
                 ingredientManager.removeIngredientsByRecipe(recipe);
-                recipeManager.removeInstructionsByRecipe(recipe);
+                instructionManager.removeInstructionsByRecipe(recipe);
             } else {
-                recipe = recipeManager.addRecipe(recipe);
+                recipe = recipeManager.add(recipe);
             }
 
             List<Ingredient> ingredients = getAllIngredients();
@@ -140,7 +142,7 @@ public class RecipeFormController {
             List<Instruction> instructions = getAllInstructions();
             for (Instruction instruction : instructions) {
                 instruction.setRecipe(recipe);
-                recipeManager.addInstruction(instruction);
+                instructionManager.add(instruction);
             }
             closeWindow();
 
@@ -159,7 +161,7 @@ public class RecipeFormController {
         recipe.setOwner(owner);
 
         try {
-            recipe = recipeManager.addRecipe(recipe);
+            recipe = recipeManager.add(recipe);
             List<Ingredient> ingredients = getAllIngredients();
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);
@@ -169,7 +171,7 @@ public class RecipeFormController {
             List<Instruction> instructions = getAllInstructions();
             for (Instruction instruction : instructions) {
                 instruction.setRecipe(recipe);
-                recipeManager.addInstruction(instruction);
+                instructionManager.add(instruction);
             }
             closeWindow();
         } catch (RecipeException e) {
@@ -201,7 +203,7 @@ public class RecipeFormController {
         try {
             recipeManager.validateRecipe(recipe);
             ingredientManager.validateIngredients(ingredients);
-            recipeManager.validateInstructions(instructions);
+            instructionManager.validateInstructions(instructions);
         } catch (RecipeException e){
             showInvalidRecipeFields();
             showInvalidIngredientFields();
