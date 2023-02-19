@@ -13,6 +13,10 @@ public class RecipeManager {
         return DaoFactory.recipeDao().add(recipe);
     }
 
+    public Recipe updateRecipe(Recipe recipe) throws RecipeException {
+        return DaoFactory.recipeDao().update(recipe);
+    }
+
     public Ingredient addIngredient(Ingredient ingredient) throws RecipeException {
         return DaoFactory.ingredientDao().add(ingredient);
     }
@@ -87,6 +91,4 @@ public class RecipeManager {
             throw new RecipeException("Invalid recipe");
         }
     }
-
-
 }
