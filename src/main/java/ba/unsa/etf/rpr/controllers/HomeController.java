@@ -1,7 +1,9 @@
 package ba.unsa.etf.rpr.controllers;
 
+import ba.unsa.etf.rpr.business.RecipeManager;
 import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.domain.User;
+import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,14 +14,19 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class HomeController {
+    private RecipeManager recipeManager = new RecipeManager();
     private static User loggedInUser = null;
     public TextField fldSearch;
+    public TilePane paneContent;
 
     public void initUser(User user) {
         if (loggedInUser == null)
@@ -64,5 +71,22 @@ public class HomeController {
         stage.show();
         Node node = (Node) actionEvent.getSource();
         ((Stage) node.getScene().getWindow()).close();
+    }
+
+    public void openMyRecipes(ActionEvent actionEvent) {
+        try {
+            List<Recipe> recipes = recipeManager.getRecipesByUser(loggedInUser);
+            paneContent.getChildren().clear();
+            for (Recipe recipe : recipes) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recipeItemTemplate.fxml"));
+                loader.setController(new RecipeItemTemplateController(this, recipe, true));
+                VBox box = loader.load();
+                paneContent.getChildren().add(box);
+            }
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
