@@ -44,7 +44,17 @@ public class RecipeItemTemplateController {
         lblTitle.setText(recipe.getTitle());
         lblUsername.setText(recipe.getOwner().getUsername());
         lblServings.setText("Serves: " + recipe.getServings());
-        lblTitle.setText("" + recipe.getCookTime() + recipe.getPreparationTime());
+        int time = recipe.getCookTime() + recipe.getPreparationTime();
+        int hours = time / 60;
+        int minutes = time % 60;
+        String timeText = "";
+        if (hours > 0) {
+            timeText += hours + "h ";
+        }
+        if (minutes > 0) {
+            timeText += minutes + "min";
+        }
+        lblTime.setText(timeText);
     }
 
     public void openRecipe(MouseEvent mouseEvent) {
@@ -54,8 +64,7 @@ public class RecipeItemTemplateController {
 
     public void actionEdit(ActionEvent actionEvent) {
         homeController.openRecipeForm(recipe);
-        // update recipes that are shown when opening my recipes
-        // homeController.openMyRecipes();
+
     }
 
     public void actionDelete(ActionEvent actionEvent) {
@@ -66,7 +75,6 @@ public class RecipeItemTemplateController {
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
-        // update recipes that are shown when opening my recipes
-        // homeController.openMyRecipes();
+
     }
 }
