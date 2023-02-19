@@ -17,6 +17,10 @@ public class InstructionManager {
         DaoFactory.instructionDao().deleteInstructionsByRecipe(recipe);
     }
 
+    public List<Instruction> getInstructionsByRecipe(Recipe recipe) throws RecipeException {
+        return DaoFactory.instructionDao().getInstructionsByRecipe(recipe);
+    }
+
     public void validateInstruction(Instruction instruction) throws RecipeException {
         if (instruction.getDescription().isBlank()) {
             throw new RecipeException("Instruction description can not be empty");
