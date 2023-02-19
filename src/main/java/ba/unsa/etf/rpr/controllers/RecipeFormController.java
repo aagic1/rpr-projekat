@@ -3,7 +3,6 @@ package ba.unsa.etf.rpr.controllers;
 import ba.unsa.etf.rpr.business.IngredientManager;
 import ba.unsa.etf.rpr.business.InstructionManager;
 import ba.unsa.etf.rpr.business.RecipeManager;
-import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.domain.Ingredient;
 import ba.unsa.etf.rpr.domain.Instruction;
 import ba.unsa.etf.rpr.domain.Recipe;
@@ -26,7 +25,6 @@ public class RecipeFormController {
     private Recipe recipeToUpdate;
     private User owner;
     private RecipeManager recipeManager = new RecipeManager();
-    private UserManager userManager = new UserManager();
     private IngredientManager ingredientManager = new IngredientManager();
     private InstructionManager instructionManager = new InstructionManager();
 
@@ -53,11 +51,50 @@ public class RecipeFormController {
         initSpinners();
         initListeners();
         if (recipeToUpdate != null) {
-            populateForm(recipeToUpdate);
+            populateForm();
         }
     }
 
-    private void populateForm(Recipe recipe) {
+    private void populateForm() {
+        populateRecipe(recipeToUpdate);
+        populateIngredients(recipeToUpdate);
+    }
+
+    private void populateIngredients(Recipe recipe) {
+        try {
+            List<Ingredient> ingredients = ingredientManager.getIngredientsByRecipe(recipe);
+            for (int i = 1; i < ingredients.size(); i++) {
+                addIngredient(null);
+            }
+            List<Node> nodes = boxIngredients.getChildren();
+            for (int i = 0; i < ingredients.size(); i++) {
+                HBox currentRow = (HBox) nodes.get(i);
+                ((TextField)currentRow.getChildren().get(0)).setText(ingredients.get(i).getAmount());
+                ((TextField)currentRow.getChildren().get(1)).setText(ingredients.get(i).getMeasurementUnit());
+                ((TextField)currentRow.getChildren().get(2)).setText(ingredients.get(i).getName());
+            }
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void populateInstructions(Recipe recipe) {
+        try {
+            List<Instruction> instructions = instructionManager.getInstructionsByRecipe(recipe);
+            for (int i = 1; i < instructions.size(); i++) {
+                addStep(null);
+            }
+            List<Node> nodes = boxInstructions.getChildren();
+            for (int i = 0; i < instructions.size(); i++) {
+                HBox currentRow = (HBox) nodes.get(i);
+                ((TextField)currentRow.getChildren().get(1)).setText(instructions.get(i).getDescription());
+            }
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void populateRecipe(Recipe recipe) {
         textTitle.setText(recipe.getTitle());
         textDescription.setText(recipe.getDescription());
         spinnerServings.getEditor().setText("" + recipe.getServings());
@@ -137,7 +174,7 @@ public class RecipeFormController {
             List<Ingredient> ingredients = getAllIngredients();
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);
-                ingredientManager.addIngredient(ingredient);
+                ingredientManager.add(ingredient);
             }
             List<Instruction> instructions = getAllInstructions();
             for (Instruction instruction : instructions) {
@@ -165,7 +202,7 @@ public class RecipeFormController {
             List<Ingredient> ingredients = getAllIngredients();
             for (Ingredient ingredient : ingredients) {
                 ingredient.setRecipe(recipe);
-                ingredientManager.addIngredient(ingredient);
+                ingredientManager.add(ingredient);
             }
 
             List<Instruction> instructions = getAllInstructions();
