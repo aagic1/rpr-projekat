@@ -16,6 +16,10 @@ public class RecipeManager {
         return DaoFactory.recipeDao().update(recipe);
     }
 
+    public void delete(Recipe recipe) throws RecipeException {
+        DaoFactory.recipeDao().delete(recipe);
+    }
+
     public void validateTitle(String title) throws RecipeException {
         if (title.isBlank()) {
             throw new RecipeException("Recipe title can not be empty");
