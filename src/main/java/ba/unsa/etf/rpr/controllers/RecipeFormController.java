@@ -165,6 +165,7 @@ public class RecipeFormController {
         recipe.setOwner(owner);
         try {
             if (recipeToUpdate != null) {
+                recipe.setId(recipeToUpdate.getId());
                 recipe = recipeManager.update(recipe);
                 ingredientManager.removeIngredientsByRecipe(recipe);
                 instructionManager.removeInstructionsByRecipe(recipe);
