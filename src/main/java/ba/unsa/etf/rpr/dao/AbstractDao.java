@@ -132,7 +132,7 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
     public void delete(T item) throws RecipeException {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("DELETE FROM ").append(this.tableName)
-                .append("WHERE id=?");
+                .append(" WHERE id=?");
         try {
             PreparedStatement pstmt = connection.prepareStatement(sqlBuilder.toString());
             pstmt.setObject(1, item.getId());

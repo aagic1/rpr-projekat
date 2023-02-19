@@ -69,7 +69,7 @@ public class InstructionDaoSQLImpl extends AbstractDao<Instruction> implements I
 
     @Override
     public void deleteInstructionsByRecipe(Recipe recipe) throws RecipeException {
-        String sql = "DELETE FROM instructions WHERE recipe_id=?";
+        String sql = "DELETE FROM instruction WHERE recipe_id=?";
         try {
             PreparedStatement pstmt = getConnection().prepareStatement(sql);
             pstmt.setInt(1, recipe.getId());
