@@ -27,4 +27,8 @@ public class IngredientManager {
             validateIngredient(ingredient);
         }
     }
+
+    public List<Ingredient> getIngredientsByRecipe(Recipe recipe) throws RecipeException {
+        return DaoFactory.ingredientDao().getIngredientsByRecipe(recipe);
+    }
 }
