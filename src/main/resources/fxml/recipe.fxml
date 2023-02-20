@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.controllers.RecipeController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <GridPane vgap="10.0">
         <columnConstraints>
@@ -34,13 +34,13 @@
                      </font></Label>
                   <Label fx:id="lblDescription" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Recipe description" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                      <font>
-                        <Font name="System Italic" size="16.0" />
+                        <Font name="System Italic" size="18.0" />
                      </font></Label>
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label text="Author: ">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="16.0" />
                            </font></Label>
                         <Label fx:id="lblUsername" text="username">
                            <font>
