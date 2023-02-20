@@ -70,6 +70,7 @@ public class RecipeItemTemplateController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recipe.fxml"));
             loader.setController(new RecipeController(recipe));
             stage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+            stage.setTitle(recipe.getTitle());
             stage.show();
             stage.setMinWidth(stage.getWidth());
             stage.setMinHeight(stage.getHeight());
