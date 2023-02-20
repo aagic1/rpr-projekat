@@ -53,7 +53,7 @@
                            </font>
                         </Label>
                         <Button mnemonicParsing="false" onAction="#openCreateRecipe" text="Add recipe" />
-                        <Button mnemonicParsing="false" onAction="#openMyRecipes" text="My recipes" />
+                        <Button mnemonicParsing="false" onAction="#showMyRecipes" text="My recipes" />
                         <Button mnemonicParsing="false" onAction="#actionLogout" text="Logout" />
                      </children>
                   </VBox>
@@ -68,7 +68,7 @@
             <HBox alignment="TOP_RIGHT" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
                   <TextField fx:id="fldSearch" promptText="search..." />
-                  <Button mnemonicParsing="false" text="Search" />
+                  <Button mnemonicParsing="false" onAction="#actionSearch" text="Search" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="25.0" />

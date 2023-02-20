@@ -7,12 +7,10 @@ import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -55,7 +53,7 @@ public class HomeController {
             stage.setMinHeight(stage.getHeight());
             stage.setOnHidden(event -> {
                 if (isShowingMyRecipes) {
-                    openMyRecipes(null);
+                    showMyRecipes(null);
                 }
             });
         } catch (IOException e) {
@@ -74,19 +72,29 @@ public class HomeController {
         ((Stage) node.getScene().getWindow()).close();
     }
 
-    public void openMyRecipes(ActionEvent actionEvent) {
+    public void showMyRecipes(ActionEvent actionEvent) {
         try {
             List<Recipe> recipes = recipeManager.getRecipesByUser(loggedInUser);
+            showRecipes(recipes, true);
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showRecipes(List<Recipe> recipes, boolean editable) {
+        try {
             paneContent.getChildren().clear();
             for (Recipe recipe : recipes) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recipeItemTemplate.fxml"));
-                loader.setController(new RecipeItemTemplateController(this, recipe, true));
+                loader.setController(new RecipeItemTemplateController(this, recipe, editable));
                 VBox box = loader.load();
                 paneContent.getChildren().add(box);
             }
-            isShowingMyRecipes = true;
-        } catch (RecipeException e) {
-            throw new RuntimeException(e);
+            if (editable) {
+                isShowingMyRecipes = true;
+            } else {
+                isShowingMyRecipes = false;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

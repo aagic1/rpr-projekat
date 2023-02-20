@@ -1,9 +1,6 @@
 package ba.unsa.etf.rpr.controllers;
 
-import ba.unsa.etf.rpr.business.IngredientManager;
-import ba.unsa.etf.rpr.business.InstructionManager;
 import ba.unsa.etf.rpr.business.RecipeManager;
-import ba.unsa.etf.rpr.business.UserManager;
 import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
@@ -14,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -86,6 +82,6 @@ public class RecipeItemTemplateController {
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
-        homeController.openMyRecipes(null);
+        homeController.showMyRecipes(null);
     }
 }
