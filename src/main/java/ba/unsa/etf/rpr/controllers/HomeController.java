@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -24,13 +25,22 @@ import java.util.List;
 public class HomeController {
     private boolean isShowingMyRecipes = false;
     private RecipeManager recipeManager = new RecipeManager();
-    private static User loggedInUser = null;
+    private User loggedInUser;
     public TextField fldSearch;
     public TilePane paneContent;
+
+    public HomeController(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 
     @FXML
     public void initialize() {
         actionAllRecipes(null);
+        fldSearch.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                actionSearch(null);
+            }
+        });
     }
 
     public void initUser(User user) {
