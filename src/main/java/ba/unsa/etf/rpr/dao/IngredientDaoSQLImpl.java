@@ -76,7 +76,7 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
                 String amount = rs.getString("amount");
                 String measurementUnit = rs.getString("measurement_unit");
                 String name = rs.getString("name");
-                resultList.add(new Ingredient(id, null, amount, measurementUnit, name));
+                resultList.add(new Ingredient(id, null, name, amount, measurementUnit));
             }
             return resultList;
         } catch (SQLException e) {
