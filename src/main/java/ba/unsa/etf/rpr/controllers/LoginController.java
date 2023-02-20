@@ -34,9 +34,8 @@ public class LoginController {
                 User user = DaoFactory.userDao().getByEmail(fldEmail.getText());
                 Stage homeStage = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
+                loader.setController(new HomeController(user));
                 homeStage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
-                HomeController homeController = loader.getController();
-                homeController.initUser(user);
                 homeStage.setTitle("E-CookBook");
                 homeStage.setResizable(true);
                 homeStage.show();
