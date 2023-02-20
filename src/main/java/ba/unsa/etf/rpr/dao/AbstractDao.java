@@ -4,11 +4,9 @@ import ba.unsa.etf.rpr.domain.Idable;
 import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.exception.RecipeException;
 
+import java.io.FileInputStream;
 import java.sql.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Abstract class that implements core DAO CRUD methods for every entity
@@ -27,9 +25,11 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
     private static void createConnection() {
         if (connection == null) {
             try {
-                String url = "jdbc:mysql://localhost:3306/e_kuharica";
-                String username = "root";
-                String password = "password";
+                Properties p = new Properties();
+                p.load(new FileInputStream("src/main/resources/application.properties"));
+                String url = p.getProperty("db.connection_string");
+                String username = p.getProperty("db.username");
+                String password = p.getProperty("db.password");
                 connection = DriverManager.getConnection(url, username, password);
             } catch (Exception e) {
                 throw new RuntimeException(e);
