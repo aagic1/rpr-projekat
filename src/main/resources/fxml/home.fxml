@@ -37,7 +37,7 @@
                   </Label>
                   <VBox>
                      <children>
-                        <Button mnemonicParsing="false" text="Home">
+                        <Button mnemonicParsing="false" onAction="#actionAllRecipes" text="All recipes">
                            <font>
                               <Font size="16.0" />
                            </font>

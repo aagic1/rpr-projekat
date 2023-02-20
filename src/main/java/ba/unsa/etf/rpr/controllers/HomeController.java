@@ -27,6 +27,7 @@ public class HomeController {
     public TextField fldSearch;
     public TilePane paneContent;
 
+
     public void initUser(User user) {
         if (loggedInUser == null)
             loggedInUser = user;
@@ -106,6 +107,15 @@ public class HomeController {
                 isShowingMyRecipes = false;
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void actionAllRecipes(ActionEvent actionEvent) {
+        try {
+            List<Recipe> allRecipes = recipeManager.getAllRecipes();
+            showRecipes(allRecipes, false);
+        } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
     }
