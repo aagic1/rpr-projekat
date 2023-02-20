@@ -66,7 +66,23 @@ public class IngredientDaoSQLImpl extends AbstractDao<Ingredient> implements Ing
     @Override
     public List<Ingredient> getIngredientsByRecipe(Recipe recipe) throws RecipeException{
         String sql = "SELECT * FROM ingredient WHERE recipe_id=?";
-        return executeQuery(sql, new Object[]{recipe.getId()});
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, recipe.getId());
+            ResultSet rs = pstmt.executeQuery();
+            List<Ingredient> resultList = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String amount = rs.getString("amount");
+                String measurementUnit = rs.getString("measurement_unit");
+                String name = rs.getString("name");
+                resultList.add(new Ingredient(id, null, amount, measurementUnit, name));
+            }
+            return resultList;
+        } catch (SQLException e) {
+            throw new RecipeException(e.getMessage(), e);
+        }
+//        return executeQuery(sql, new Object[]{recipe.getId()});
     }
 
     @Override
