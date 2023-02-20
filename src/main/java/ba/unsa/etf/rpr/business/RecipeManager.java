@@ -13,6 +13,11 @@ public class RecipeManager {
     public List<Recipe> getRecipesByUser(User user) throws RecipeException {
         return DaoFactory.recipeDao().searchByOwner(user);
     }
+
+    public List<Recipe> getRecipesByTitle(String text) throws RecipeException {
+        return DaoFactory.recipeDao().searchByTitle(text);
+    }
+
     public Recipe add(Recipe recipe) throws RecipeException {
         return DaoFactory.recipeDao().add(recipe);
     }
