@@ -81,6 +81,16 @@ public class HomeController {
         }
     }
 
+    public void actionSearch(ActionEvent actionEvent) {
+        String searchText = fldSearch.getText();
+        try {
+            List<Recipe> recipes = recipeManager.getRecipesByTitle(searchText);
+            showRecipes(recipes, false);
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void showRecipes(List<Recipe> recipes, boolean editable) {
         try {
             paneContent.getChildren().clear();
