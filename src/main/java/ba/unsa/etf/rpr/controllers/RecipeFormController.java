@@ -110,7 +110,7 @@ public class RecipeFormController {
     public void addIngredient(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ingredientTemplate.fxml"));
-            loader.setController(new IngredientTemplateController(this, recipeManager));
+            loader.setController(new IngredientTemplateController(this));
             HBox hbox = loader.load();
             boxIngredients.getChildren().add(hbox);
         } catch (IOException e) {
@@ -188,34 +188,6 @@ public class RecipeFormController {
             }
             closeWindow();
 
-        } catch (RecipeException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void updateRecipe() {
-        Recipe recipe = getRecipeData();
-
-    }
-
-    private void addRecipe() {
-        Recipe recipe = getRecipeData();
-        recipe.setOwner(owner);
-
-        try {
-            recipe = recipeManager.add(recipe);
-            List<Ingredient> ingredients = getAllIngredients();
-            for (Ingredient ingredient : ingredients) {
-                ingredient.setRecipe(recipe);
-                ingredientManager.add(ingredient);
-            }
-
-            List<Instruction> instructions = getAllInstructions();
-            for (Instruction instruction : instructions) {
-                instruction.setRecipe(recipe);
-                instructionManager.add(instruction);
-            }
-            closeWindow();
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
@@ -341,7 +313,6 @@ public class RecipeFormController {
             instructions.add(new Instruction(0, null, step, description));
             counter++;
         }
-        System.out.println(instructions);
         return instructions;
     }
 

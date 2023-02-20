@@ -85,8 +85,6 @@ public class RecipeItemTemplateController {
 
     public void actionDelete(ActionEvent actionEvent) {
         try {
-            ingredientManager.removeIngredientsByRecipe(recipe);
-            instructionManager.removeInstructionsByRecipe(recipe);
             recipeManager.delete(recipe);
         } catch (RecipeException e) {
             throw new RuntimeException(e);

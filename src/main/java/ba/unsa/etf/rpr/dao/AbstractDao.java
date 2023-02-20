@@ -62,8 +62,6 @@ public abstract class AbstractDao<T extends Idable> implements Dao<T> {
         return executeQueryUnique(sql, new Object[]{id});
     }
 
-
-
     @Override
     public List<T> getAll() throws RecipeException{
         String sql = "SELECT * FROM " + this.tableName;

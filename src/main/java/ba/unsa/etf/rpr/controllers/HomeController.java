@@ -34,11 +34,6 @@ public class HomeController {
             loggedInUser = user;
     }
 
-    public void logOutUser() {
-        loggedInUser = null;
-    }
-
-
     public void openCreateRecipe(ActionEvent actionEvent) {
         openRecipeForm(null);
     }

@@ -16,11 +16,10 @@ public class IngredientTemplateController {
     public TextField fldMeasurementUnit;
     public TextField fldAmount;
     private RecipeFormController recipeFormController;
-    private RecipeManager recipeManager;
 
-    public IngredientTemplateController(RecipeFormController recipeFormController, RecipeManager recipeManager) {
+
+    public IngredientTemplateController(RecipeFormController recipeFormController) {
         this.recipeFormController = recipeFormController;
-        this.recipeManager = recipeManager;
     }
 
     @FXML
@@ -35,9 +34,6 @@ public class IngredientTemplateController {
             }
         });
     }
-
-
-
 
     public void deleteIngredient(ActionEvent actionEvent) {
         Node button = (Node) actionEvent.getSource();
