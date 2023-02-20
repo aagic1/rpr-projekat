@@ -5,6 +5,7 @@ import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.domain.User;
 import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -27,6 +28,10 @@ public class HomeController {
     public TextField fldSearch;
     public TilePane paneContent;
 
+    @FXML
+    public void initialize() {
+        actionAllRecipes(null);
+    }
 
     public void initUser(User user) {
         if (loggedInUser == null)
