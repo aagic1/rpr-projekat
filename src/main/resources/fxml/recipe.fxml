@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+A<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="600.0" minWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <GridPane vgap="10.0">
         <columnConstraints>
@@ -85,7 +85,7 @@
                   </HBox>
                </children></VBox>
             <Separator prefWidth="200.0" GridPane.rowIndex="1" />
-            <VBox GridPane.rowIndex="3">
+            <VBox fx:id="boxIngredients" spacing="5.0" GridPane.rowIndex="3">
                <children>
                   <Label text="Ingredients">
                      <font>
@@ -94,7 +94,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox GridPane.rowIndex="4">
+            <VBox fx:id="boxInstructions" spacing="5.0" GridPane.rowIndex="4">
                <children>
                   <Label text="Instructions">
                      <font>
@@ -103,7 +103,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="5">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.rowIndex="5">
                <children>
                   <Label text="Recipe notes">
                      <font>
