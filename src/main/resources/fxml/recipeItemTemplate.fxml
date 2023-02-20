@@ -19,7 +19,7 @@
                <children>
                   <Label fx:id="lblUsername" text="\@Username">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
                </children>
@@ -44,7 +44,7 @@
          <children>
             <Label fx:id="lblTitle" prefWidth="350.0" text="Recipe title" wrapText="true">
                <font>
-                  <Font size="20.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
          </children>
