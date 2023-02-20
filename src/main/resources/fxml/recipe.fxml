@@ -32,7 +32,7 @@
                      <font>
                         <Font size="24.0" />
                      </font></Label>
-                  <Label fx:id="lblDescription" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Recipe description" wrapText="true" VBox.vgrow="ALWAYS">
+                  <Label fx:id="lblDescription" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="Recipe description" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="System Italic" size="18.0" />
                      </font></Label>
