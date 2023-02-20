@@ -20,10 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RecipeItemTemplateController {
-    private IngredientManager ingredientManager = new IngredientManager();
-    private InstructionManager instructionManager = new InstructionManager();
     private RecipeManager recipeManager = new RecipeManager();
-    private UserManager userManager = new UserManager();
     private HomeController homeController;
     private Recipe recipe;
     private boolean editable;
