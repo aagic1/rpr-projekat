@@ -147,7 +147,7 @@
             </HBox>
          </children>
       </VBox>
-      <ScrollPane prefHeight="640.0" prefWidth="760.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <ScrollPane prefHeight="640.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <content>
             <VBox spacing="10.0">
                <children>
