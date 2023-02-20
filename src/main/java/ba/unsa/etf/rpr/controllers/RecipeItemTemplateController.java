@@ -8,9 +8,16 @@ import ba.unsa.etf.rpr.domain.Recipe;
 import ba.unsa.etf.rpr.exception.RecipeException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class RecipeItemTemplateController {
     private IngredientManager ingredientManager = new IngredientManager();
@@ -58,8 +65,17 @@ public class RecipeItemTemplateController {
     }
 
     public void openRecipe(MouseEvent mouseEvent) {
-        // TODO
-        // homeController.openRecipe(recipe);
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/recipe.fxml"));
+            loader.setController(new RecipeController(recipe));
+            stage.setScene(new Scene(loader.load(), Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+            stage.show();
+            stage.setMinWidth(stage.getWidth());
+            stage.setMinHeight(stage.getHeight());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void actionEdit(ActionEvent actionEvent) {
