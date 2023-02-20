@@ -3,3 +3,7 @@
     -fx-border-color: #999;
     -fx-border-radius: 4px;
 }
+
+.cardContainer:hover {
+    -fx-background-color: #ddd;
+}
