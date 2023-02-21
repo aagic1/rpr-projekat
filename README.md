@@ -4,7 +4,7 @@
 <b>mvn clean install</b>
 <br>
 <b>mvn clean javafx:run</b>
-<br>
+<br><br>
 <p>Za pristup potrebno je unijeti validne login podatke. Npr:</p>
 <b>email: gost@gmail.com</b>
 <br>
