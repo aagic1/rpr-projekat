@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" minWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <GridPane vgap="10.0">
         <columnConstraints>
@@ -110,7 +110,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblNotes" prefWidth="640.0" text="Label" />
+                  <Label fx:id="lblNotes" prefWidth="640.0" />
                </children>
             </VBox>
          </children>
